@@ -22,6 +22,7 @@
 <meta property="og:image:alt" content="Martynov Brand Advisory: Building brands. Opening markets.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://sasharywork-dev.github.io/martynov/og-image.jpg">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('motion','pre');setTimeout(()=>document.documentElement.classList.remove('motion','pre'),3000)}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
@@ -85,6 +86,8 @@ p{text-wrap:pretty}
 .pm{display:block;color:var(--gold);aspect-ratio:450/486}
 /* SplitText line masks: room for descenders */
 .ln-mask{padding-bottom:.14em;margin-bottom:-.14em}
+.motion .hero h1,.motion .hero .sub,.motion .hero .ctas{visibility:hidden}
+.pre :is(.svc,.tile,.box,.case,.brands>span,.tags>span,.person .photo,.ico,.art){opacity:0}
 
 .container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
 .grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--gap)}
@@ -648,14 +651,14 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
   const EASE = 'expo.out';
   const mm = gsap.matchMedia();
 
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
+  const start = () => mm.add('(prefers-reduced-motion: no-preference)', () => {
     // Line-by-line reveal for every text block (headings, body, captions, labels)
     const targets = gsap.utils.toArray('main h1, main h2, main h3, main p, .facts b, .facts span, .node b')
       .filter(el => !el.closest('.statement .lead, .proc li > p, .btn') && el.textContent.trim());
     targets.forEach(el => {
       const inHero = !!el.closest('.hero');
       SplitText.create(el, {
-        type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'ln',
+        type: 'lines', mask: 'lines', linesClass: 'ln',
         onSplit(self) {
           return gsap.from(self.lines, {
             yPercent: 110, duration: inHero ? 1.1 : .9, ease: EASE, stagger: .08,
@@ -666,11 +669,12 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
       });
     });
     gsap.from('.hero .ctas .btn', { y: 16, opacity: 0, duration: .8, ease: EASE, stagger: .06, delay: .6 });
+    document.documentElement.classList.remove('motion');
 
     // U.S. market: words darken as the paragraph scrolls through
     const st = document.querySelector('.statement .lead');
     if (st) SplitText.create(st, {
-      type: 'words', autoSplit: true,
+      type: 'words',
       onSplit(self) {
         return gsap.fromTo(self.words, { color: 'rgba(37,42,46,.25)' }, {
           color: '#252A2E', ease: 'none', stagger: .1,
@@ -692,14 +696,17 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     }
 
     // Cards and chips: short staggered rise, batched per row
-    ScrollTrigger.batch('.svc, .tile, .box, .case, .brands > span, .tags > span, .person .photo, .ico, .art', {
-      start: 'top 90%', once: true,
-      onEnter: els => gsap.from(els, { y: 20, opacity: 0, duration: .8, ease: EASE, stagger: .05, clearProps: 'transform' })
+    const rise = '.svc, .tile, .box, .case, .brands > span, .tags > span, .person .photo, .ico, .art';
+    gsap.set(rise, { opacity: 0, y: 20 });
+    document.documentElement.classList.remove('pre');
+    ScrollTrigger.batch(rise, {
+      start: 'top 92%', once: true,
+      onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: .8, ease: EASE, stagger: .05, clearProps: 'transform' })
     });
   });
 
-  // Re-measure once web fonts settle so masks match final line breaks
-  document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(start);
+
 })();
 
 /* ---------- Globe: d3-geo orthographic on <canvas>, auto-rotates, drag to rotate ----------
