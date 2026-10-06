@@ -100,7 +100,7 @@ p{text-wrap:pretty}
 .ico-mail{--ico:var(--i-mail)} .ico-in{--ico:var(--i-in)}
 
 /* Header */
-.top{position:sticky;top:0;z-index:10;background:rgb(23 50 74/.92);color:var(--white);-webkit-backdrop-filter:blur(1rem);backdrop-filter:blur(1rem);border-bottom:.0625rem solid var(--line-dark)}
+.top{position:sticky;top:0;z-index:10;background:var(--blue);color:var(--white);border-bottom:.0625rem solid var(--line-dark)}
 @media (prefers-reduced-transparency:reduce){.top{background:var(--blue);backdrop-filter:none}}
 .top .grid{align-items:center;height:4.5rem}
 .brand{grid-column:1/4;display:flex;align-items:center;gap:.875rem}
@@ -226,7 +226,7 @@ p{text-wrap:pretty}
 .chip img{width:1.125rem;height:.84375rem;object-fit:cover;border-radius:.125rem;box-shadow:0 0 0 .0625rem rgb(37 42 46/.12)}
 .globe{grid-column:5/9;justify-self:end;position:relative;width:35rem;max-width:100%;aspect-ratio:1;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
 .globe.dragging{cursor:grabbing}
-.globe svg,.globe > img{display:block;width:100%;height:100%;overflow:visible}
+.globe canvas,.globe > img{display:block;width:100%;height:100%;overflow:visible}
 .globe .land{fill:#E3E8ED;stroke:#fff;stroke-width:.6}
 .globe .land.hl{fill:var(--gold)}
 .globe .land{transition:fill .25s ease}
@@ -632,8 +632,9 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
   const mm = gsap.matchMedia();
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
-    // Line-by-line reveal for headings and lead copy
-    const targets = gsap.utils.toArray('.hero h1, .hero .sub, main h2, main .lead:not(.statement .lead), .ap-head .sub, .quote, .why .lead');
+    // Line-by-line reveal for every text block (headings, body, captions, labels)
+    const targets = gsap.utils.toArray('main h1, main h2, main h3, main p, .facts b, .facts span, .node b')
+      .filter(el => !el.closest('.statement .lead, .proc li > p, .btn') && el.textContent.trim());
     targets.forEach(el => {
       const inHero = !!el.closest('.hero');
       SplitText.create(el, {
@@ -642,7 +643,7 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
           return gsap.from(self.lines, {
             yPercent: 110, duration: inHero ? 1.1 : .9, ease: EASE, stagger: .08,
             delay: inHero ? (el.tagName === 'H1' ? .1 : .35) : 0,
-            scrollTrigger: inHero ? null : { trigger: el, start: 'top 88%', once: true }
+            scrollTrigger: inHero ? null : { trigger: el, start: 'top 92%', once: true }
           });
         }
       });
@@ -674,9 +675,9 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     }
 
     // Cards and chips: short staggered rise, batched per row
-    ScrollTrigger.batch('.svc, .tile, .box, .facts > div, .brands > span, .person .photo, .partner .person', {
+    ScrollTrigger.batch('.svc, .tile, .box, .case, .brands > span, .tags > span, .person .photo, .ico, .art', {
       start: 'top 90%', once: true,
-      onEnter: els => gsap.from(els, { y: 24, opacity: 0, duration: .8, ease: EASE, stagger: .06 })
+      onEnter: els => gsap.from(els, { y: 20, opacity: 0, duration: .8, ease: EASE, stagger: .05, clearProps: 'transform' })
     });
   });
 
@@ -684,13 +685,16 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
   document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
 
-/* ---------- Globe: orthographic d3-geo render, auto-rotates, drag to rotate ---------- */
+/* ---------- Globe: d3-geo orthographic on <canvas>, auto-rotates, drag to rotate ----------
+   Canvas keeps it to one paint per frame (an SVG with ~180 country paths re-rendered every
+   frame was the main cause of scroll jank). It only redraws when the rotation changes, and
+   label sizes are measured once (not per frame) to avoid forced layout. */
 (() => {
   const box = document.querySelector('.globe');
   if (!box || !window.d3 || !d3.geoOrthographic || !window.topojson) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const S = 560, R = S / 2 - 4, NS = 'http://www.w3.org/2000/svg';
-  const HL = new Set(['840', '643', '792', '196', '499']);
+  const S = 560, R = S / 2 - 4;
+  const C = { sphere: '#fff', ring: '#D6CCB8', land: '#E3E8ED', border: '#fff', hl: '#C9A15F', hlOn: '#B48A47', grat: 'rgba(23,50,74,.07)', pin: '#17324A', halo: 'rgba(23,50,74,.22)' };
   const ISO = { us: '840', ru: '643', me: '499', tr: '792', cy: '196' };
   const PINS = [
     { id: 'us', name: 'United States', ll: [-81.5, 28.3], side: 'right' },
@@ -699,68 +703,89 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     { id: 'tr', name: 'Turkey', ll: [30.5, 39.5], side: 'right', dy: -10 },
     { id: 'cy', name: 'Cyprus', ll: [33.2, 35.1], side: 'right', dy: 10 }
   ];
-  const el = (tag, cls) => { const n = document.createElementNS(NS, tag); if (cls) n.setAttribute('class', cls); return n; };
 
   fetch('data/countries-110m.json').then(r => r.json()).then(topo => {
-    const land = topojson.feature(topo, topo.objects.countries).features;
-    const proj = d3.geoOrthographic().scale(R).translate([S / 2, S / 2]).clipAngle(90).precision(.5);
-    const path = d3.geoPath(proj);
+    const all = topojson.feature(topo, topo.objects.countries).features;
+    const HLIDS = new Set(Object.values(ISO));
+    const hlFeat = all.filter(f => HLIDS.has(f.id));
+    const landMesh = topojson.merge(topo, topo.objects.countries.geometries);
+    const borders = topojson.mesh(topo, topo.objects.countries, (a, b) => a !== b);
     const grat = d3.geoGraticule10();
     const rot = [32, -34, 0];
 
-    const svg = el('svg'); svg.setAttribute('viewBox', `0 0 ${S} ${S}`); svg.setAttribute('aria-hidden', 'true');
-    const sphere = el('path', 'sphere'), gr = el('path', 'grat'); svg.append(sphere, gr);
-    const lands = land.map(f => { const p = el('path', 'land' + (HL.has(f.id) ? ' hl' : '')); svg.append(p); return [p, f]; });
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('aria-hidden', 'true');
+    const ctx = canvas.getContext('2d');
+    const proj = d3.geoOrthographic().scale(R).translate([S / 2, S / 2]).clipAngle(90).precision(.6);
+    const path = d3.geoPath(proj, ctx);
+
     const pins = PINS.map(pn => {
-      const halo = el('circle', 'pin-halo'); halo.setAttribute('r', 9);
-      const dot = el('circle', 'pin'); dot.setAttribute('r', 4.5);
-      svg.append(halo, dot);
       const lab = document.createElement('span'); lab.className = 'pin-label';
       lab.innerHTML = `<img src="img/flags/${pn.id}.svg" alt="">${pn.name}`;
       box.append(lab);
-      return { ...pn, halo, dot, lab };
+      return { ...pn, lab, w: 0, h: 0 };
     });
     box.querySelector('img')?.remove();
-    box.prepend(svg);
+    box.prepend(canvas);
 
-    const render = () => {
+    let dpr = 1, k = 1, vw = 0, boxLeft = 0, active = null, dirty = true;
+    const measure = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      const w = box.clientWidth; k = w / S;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(w * dpr);
+      canvas.style.width = canvas.style.height = w + 'px';
+      vw = document.documentElement.clientWidth; boxLeft = box.getBoundingClientRect().left;
+      for (const pn of pins) { pn.w = pn.lab.offsetWidth; pn.h = pn.lab.offsetHeight; }
+      dirty = true;
+    };
+
+    const draw = () => {
       proj.rotate(rot);
-      sphere.setAttribute('d', path({ type: 'Sphere' }));
-      gr.setAttribute('d', path(grat));
-      for (const [p, f] of lands) p.setAttribute('d', path(f) || '');
-      const k = box.clientWidth / S, centre = [-rot[0], -rot[1]];
+      ctx.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+      ctx.clearRect(0, 0, S, S);
+      ctx.beginPath(); path({ type: 'Sphere' }); ctx.fillStyle = C.sphere; ctx.fill(); ctx.strokeStyle = C.ring; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); path(grat); ctx.strokeStyle = C.grat; ctx.stroke();
+      ctx.beginPath(); path(landMesh); ctx.fillStyle = C.land; ctx.fill();
+      for (const f of hlFeat) { ctx.beginPath(); path(f); ctx.fillStyle = (active && ISO[active] === f.id) ? C.hlOn : C.hl; ctx.fill(); }
+      ctx.beginPath(); path(borders); ctx.strokeStyle = C.border; ctx.lineWidth = .6; ctx.stroke();
+
+      const centre = [-rot[0], -rot[1]];
       for (const pn of pins) {
         const vis = d3.geoDistance(pn.ll, centre) < Math.PI / 2 - .05;
         const [x, y] = proj(pn.ll);
-        for (const c of [pn.halo, pn.dot]) { c.setAttribute('cx', x); c.setAttribute('cy', y); c.style.display = vis ? '' : 'none'; }
-        const w = pn.lab.offsetWidth, h = pn.lab.offsetHeight, px = x * k, py = y * k;
+        if (vis) {
+          ctx.beginPath(); ctx.arc(x, y, 9, 0, 7); ctx.fillStyle = C.halo; ctx.fill();
+          ctx.beginPath(); ctx.arc(x, y, 4.5, 0, 7); ctx.fillStyle = C.pin; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = '#fff'; ctx.stroke();
+        }
+        const px = x * k, py = y * k, w = pn.w, h = pn.h;
         let lx = px + 12, ly = py - h / 2 + (pn.dy || 0);
         if (pn.side === 'left') lx = px - 12 - w;
-        if (pn.side === 'up') { lx = px - w / 2 + 10; ly = py - 14 - h; }
-        if (pn.side === 'down') { lx = px - w / 2 + 16; ly = py + 12; }
-        const vw = document.documentElement.clientWidth - box.getBoundingClientRect().left - 8;
-        if (pn.side === 'right' && lx + w > vw) lx = px - 12 - w; // no room on the right (narrow screens): flip left
-        pn.lab.style.transform = `translate(${lx}px,${ly}px)`;
-        pn.lab.style.opacity = vis ? 1 : 0;
+        if (pn.side === 'right' && boxLeft + lx + w > vw - 8) lx = px - 12 - w; // no room on narrow screens: flip left
+        pn.lab.style.transform = `translate3d(${lx}px,${ly}px,0)`;
+        // labels fade out a little before their pin reaches the rim, where they would bunch up
+        pn.lab.style.opacity = d3.geoDistance(pn.ll, centre) < Math.PI / 2 - .4 ? 1 : 0;
       }
+      dirty = false;
     };
 
-    // Auto-rotation (paused off-screen, while dragging, and under reduced motion)
-    let visible = false, dragging = false, hovering = false, vx = 0, last = performance.now();
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(box);
+    // Loop runs only while the globe is on screen
+    let visible = false, dragging = false, hovering = false, vx = 0, last = 0, raf = 0;
     const SPEED = .006; // deg per ms ≈ one turn per minute
     const tick = now => {
-      const dt = Math.min(64, now - last); last = now;
-      if (visible && !dragging && !hovering) {
-        if (Math.abs(vx) > .001) { rot[0] += vx * dt; vx *= Math.pow(.94, dt / 16); }
-        else if (!reduce) rot[0] += SPEED * dt;
-        render();
+      raf = 0;
+      if (!visible) return;
+      const dt = Math.min(64, now - (last || now)); last = now;
+      if (!dragging && !hovering) {
+        if (Math.abs(vx) > .001) { rot[0] += vx * dt; vx *= Math.pow(.94, dt / 16); dirty = true; }
+        else if (!reduce) { rot[0] += SPEED * dt; dirty = true; }
       }
-      requestAnimationFrame(tick);
+      if (dirty) draw();
+      raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    const kick = () => { if (!raf && visible) { last = 0; raf = requestAnimationFrame(tick); } };
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; kick(); }, { rootMargin: '100px' }).observe(box);
 
-    // Drag to rotate: horizontal spins, vertical tilts (clamped); release keeps momentum
+    // Drag: horizontal spins, vertical tilts (clamped); release keeps momentum
     let px0, py0, t0;
     box.addEventListener('pointerdown', e => {
       dragging = true; vx = 0; px0 = e.clientX; py0 = e.clientY; t0 = performance.now();
@@ -768,42 +793,41 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     });
     box.addEventListener('pointermove', e => {
       if (!dragging) return;
-      const k = 180 / box.clientWidth, now = performance.now();
-      const dx = (e.clientX - px0) * k, dy = (e.clientY - py0) * k;
+      const s = 180 / box.clientWidth, now = performance.now();
+      const dx = (e.clientX - px0) * s, dy = (e.clientY - py0) * s;
       rot[0] += dx; rot[1] = Math.max(-70, Math.min(70, rot[1] - dy));
-      vx = dx / Math.max(1, now - t0);
-      px0 = e.clientX; py0 = e.clientY; t0 = now;
-      render();
+      vx = dx / Math.max(1, now - t0); px0 = e.clientX; py0 = e.clientY; t0 = now;
+      dirty = true; kick();
     });
     const end = () => { dragging = false; box.classList.remove('dragging'); };
     box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+
     // Text chips ↔ globe: hovering a country in the copy lights it up and brings it into view
-    const byId = new Map(lands.map(([p, f]) => [f.id, p]));
-    let tween;
+    let tween, cur = null;
     const light = (c, on) => {
-      byId.get(ISO[c])?.classList.toggle('on', on);
-      pins.find(pn => pn.id === c)?.lab.classList.toggle('on', on);
+      pins.find(p => p.id === c)?.lab.classList.toggle('on', on);
       document.querySelectorAll(`.chip[data-c="${c}"]`).forEach(ch => ch.classList.toggle('on', on));
-      hovering = on;
+      active = on ? c : null; hovering = on; dirty = true;
       if (on) {
         const pn = pins.find(p => p.id === c);
         if (d3.geoDistance(pn.ll, [-rot[0], -rot[1]]) > 1.2 && window.gsap) {
           tween?.kill();
-          const target = { l: rot[0] }, to = -pn.ll[0] + (pn.ll[0] > 0 ? 25 : -25);
-          let dl = ((to - rot[0]) % 360 + 540) % 360 - 180;
-          tween = gsap.to(target, { l: rot[0] + dl, duration: reduce ? 0 : 1.1, ease: 'power3.inOut', onUpdate: () => { rot[0] = target.l; render(); } });
+          const t = { l: rot[0] }, to = -pn.ll[0] + (pn.ll[0] > 0 ? 25 : -25);
+          const dl = ((to - rot[0]) % 360 + 540) % 360 - 180;
+          tween = gsap.to(t, { l: rot[0] + dl, duration: reduce ? 0 : 1.1, ease: 'power3.inOut', onUpdate: () => { rot[0] = t.l; dirty = true; kick(); } });
         }
       }
-      render();
+      kick();
     };
-    // Delegated: SplitText re-wraps the paragraph, so listeners live on the document
-    let cur = null;
     const set = c => { if (c === cur) return; if (cur) light(cur, false); cur = c; if (c) light(c, true); };
+    // Delegated: SplitText re-wraps the paragraph, so listeners live on the document
     document.addEventListener('pointerover', e => set(e.target.closest?.('.chip[data-c]')?.dataset.c || null));
     document.addEventListener('focusin', e => set(e.target.closest?.('.chip[data-c]')?.dataset.c || null));
     document.addEventListener('focusout', () => set(null));
-    addEventListener('resize', render);
-    render();
+
+    addEventListener('resize', () => { measure(); kick(); });
+    measure(); draw();
+    document.fonts && document.fonts.ready.then(() => { measure(); kick(); });
   }).catch(() => { /* keep static fallback image */ });
 })();
 </script>
