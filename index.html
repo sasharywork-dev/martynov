@@ -7,333 +7,589 @@
 <meta name="description" content="U.S. market entry and commercial advisory for beverage and consumer brands. Based in Florida.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+/* --- Fluid rem scale (1rem = 16px at 1440px viewport) --- */
+html { font-size: 1rem; }
+@media screen and (max-width: 1920px) {
+  html { font-size: calc(0.00007284079084285411rem + 1.1110301768990636vw); }
+}
+@media screen and (max-width: 991px) {
+  html { font-size: 1rem; } /* tablet: fixed 16px, otherwise text drops below 11px */
+}
+@media screen and (max-width: 479px) {
+  html { font-size: calc(0.0012019230769234612rem + 4.26153846153846vw); }
+}
+@media screen and (min-width: 1921px) {
+  html { font-size: 1.3333rem; } /* freeze at the 1920px scale */
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 :root{
   --blue:#17324A; --blue-deep:#10263A; --gold:#C9A15F; --ivory:#F5F2EA; --graphite:#252A2E;
   --soft:#E8EEF2; --white:#FFFFFF; --sand:#DED2BD;
   --muted:#575C60;            /* 6.3:1 on ivory */
-  --on-blue-muted:#B9C4CE;    /* 7.6:1 on blue */
+  --on-blue:#DCE3E9; --on-blue-muted:#B9C4CE;
+  --line:#D6CCB8; --flow:#9A9EA2;
+  --chev-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1.5 6 6 1.5 10.5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --chev-u:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1.5 6.5 6 1 10.5 6.5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); --line-dark:rgb(255 255 255/.16);
   --display:Manrope,"Helvetica Neue",Arial,sans-serif;
   --body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --gutter:clamp(20px,5vw,40px);
-  --section:clamp(64px,10vw,112px);
+
+  /* Grid: 8 columns, 1920px container */
+  --container:90rem;          /* = 1920px at the 1920 scale */
+  --gutter:1.5rem;
+  --gap:1.25rem;
+  --section:7.5rem;
+  --r:.75rem; --r-s:.5rem; --muted-2:#6F7478;
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --i-chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z'/%3E%3C/svg%3E");
+  --i-mail:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z'/%3E%3C/svg%3E");
+  --i-in:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z'/%3E%3C/svg%3E");
+  --shadow:0 .0625rem .1875rem rgb(23 50 74/.08),0 1rem 2.5rem -.625rem rgb(23 50 74/.14);
 }
 *{box-sizing:border-box}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{margin:0;background:var(--ivory);color:var(--graphite);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
-a{color:inherit}
+body{margin:0;background:var(--white);color:var(--graphite);font:400 1.0625rem/1.6 var(--body)}
+a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-section[id]{scroll-margin-top:72px}
-.wrap{max-width:1180px;margin:0 auto;padding:0 var(--gutter)}
-h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.025em;margin:0;text-wrap:balance}
-h2{font-size:clamp(1.875rem,4.2vw,3rem);line-height:1.12;max-width:20ch}
-h3{font-size:1.1875rem;line-height:1.3;letter-spacing:-.01em}
-p{margin:0;text-wrap:pretty}
-.lead{font-size:clamp(1.125rem,1.8vw,1.3125rem);line-height:1.6;max-width:62ch}
+:focus-visible{outline:.125rem solid var(--gold);outline-offset:.125rem}
+section[id]{scroll-margin-top:5rem}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance}
+h2{font-size:2.75rem;line-height:1.12;letter-spacing:-.03em}
+h3{font-size:1.5rem;line-height:1.25;letter-spacing:-.015em}
+p{text-wrap:pretty}
+.pm{display:block;color:var(--gold);aspect-ratio:450/486}
+/* SplitText line masks: room for descenders */
+.ln-mask{padding-bottom:.14em;margin-bottom:-.14em}
+
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--gap)}
 .section{padding:var(--section) 0}
-.section > .wrap > h2 + *{margin-top:clamp(28px,4vw,48px)}
-.label{font:600 .875rem/1 var(--body);color:var(--muted);margin-bottom:16px}
+
+/* Square-bullet label */
+.label{display:flex;align-items:center;gap:.5rem;font:500 .8125rem/1 var(--body);margin-bottom:1.5rem}
+.label::before{content:"";width:.375rem;height:.375rem;background:var(--gold)}
 .dark{background:var(--blue);color:var(--white)}
-.dark .label,.dark .muted{color:var(--on-blue-muted)}
-.soft{background:var(--soft)}
-.white{background:var(--white)}
 .muted{color:var(--muted)}
+.lead{font-size:1.375rem;line-height:1.5;letter-spacing:-.01em}
+.n{font:600 .8125rem/1 var(--display);color:var(--gold)}
 
-/* Logo mark */
-.mark{display:block;color:var(--gold)}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:3px;font:600 .9375rem/1 var(--body);text-decoration:none;white-space:nowrap;transition:background .2s,color .2s,transform .1s ease-out}
+/* Buttons — Tetra sizing: 180x40, 14px label, 14px icon */
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:2rem;min-width:11.25rem;height:2.5rem;padding:.5rem .625rem .625rem .875rem;border-radius:var(--r-s);font:500 .875rem/1.375rem var(--body);letter-spacing:.0125rem;white-space:nowrap;transition:background-color .2s ease,border-color .2s ease,transform .12s var(--ease-out)}
 .btn:active{transform:scale(.97)}
+.btn::after{content:"";flex:none;width:var(--ico-s,.875rem);height:var(--ico-s,.875rem);background:currentColor;-webkit-mask:var(--ico,var(--i-chev)) center/contain no-repeat;mask:var(--ico,var(--i-chev)) center/contain no-repeat;transition:transform .2s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.btn:hover::after{transform:translateX(.125rem)}}
 .btn-gold{background:var(--gold);color:var(--blue)}
 .btn-gold:hover{background:#D7B377}
-.btn-outline{border:1px solid rgb(255 255 255/.45);color:var(--white)}
-.btn-outline:hover{border-color:var(--white)}
-.btn .arr{transition:transform .2s ease-out}
-.btn:hover .arr{transform:translateX(3px)}
+.btn-line{border:.0625rem solid rgb(23 50 74/.3);color:var(--blue)}
+.btn-line:hover{border-color:var(--blue)}
+.on-dark{border-color:rgb(255 255 255/.4);color:var(--white)}
+.on-dark:hover{border-color:var(--white)}
+.btn-glass{background:rgb(246 246 246/.06);color:var(--white);-webkit-backdrop-filter:blur(1.5rem);backdrop-filter:blur(1.5rem)}
+.btn-glass:hover{background:rgb(246 246 246/.12)}
+.btn-lg{width:25rem;max-width:100%;height:5.3125rem;align-items:flex-end;padding:.5rem .875rem .75rem;font-size:1rem;--ico-s:1.25rem}
+.btn-lg.on-dark{background:rgb(255 255 255/.08)}
+@media (hover:hover) and (pointer:fine){.btn-lg:hover::after{transform:none}}
+.ico-mail{--ico:var(--i-mail)} .ico-in{--ico:var(--i-in)}
 
 /* Header */
-.top{position:sticky;top:0;z-index:10;background:var(--blue);color:var(--white);border-bottom:1px solid rgb(255 255 255/.12)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:72px}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand .mark{width:44px;height:41px}
-.brand span{font:700 .8125rem/1.25 var(--display);letter-spacing:.08em;text-transform:uppercase}
-.nav{display:flex;align-items:center;gap:28px;font:500 .9375rem/1 var(--body)}
-.nav a:not(.btn){text-decoration:none;color:var(--on-blue-muted);transition:color .2s}
-.nav a:not(.btn):hover{color:var(--white)}
-.nav .btn{min-height:42px;padding:0 18px}
+.top{position:sticky;top:0;z-index:10;background:rgb(23 50 74/.92);color:var(--white);-webkit-backdrop-filter:blur(1rem);backdrop-filter:blur(1rem);border-bottom:.0625rem solid var(--line-dark)}
+@media (prefers-reduced-transparency:reduce){.top{background:var(--blue);backdrop-filter:none}}
+.top .grid{align-items:center;height:4.5rem}
+.brand{grid-column:1/4;display:flex;align-items:center;gap:.875rem}
+.brand .pm{width:3rem;height:2.75rem;color:var(--gold)}
+.brand span{font:700 .875rem/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--white)}
+.nav{grid-column:4/9;display:flex;justify-content:flex-end;align-items:center;gap:.5rem}
+.nav .links{display:flex;gap:.25rem;padding:.25rem;border-radius:var(--r-s)}
+.nav .links a{padding:.625rem .875rem;font:500 .875rem/1 var(--body);border-radius:.3125rem;transition:background .2s}
+.nav .links a{color:var(--on-blue-muted)}
+.nav .links a:hover{background:rgb(255 255 255/.08);color:var(--white)}
+.nav .btn{min-width:8.75rem}
 
 /* Hero */
-.hero{padding:clamp(56px,9vw,120px) 0 clamp(72px,10vw,128px)}
-.hero .mark{width:clamp(96px,14vw,148px);height:auto;margin-bottom:clamp(36px,5vw,56px)}
-.hero h1{font-size:clamp(2.6rem,7vw,4.75rem);line-height:1.04;letter-spacing:-.035em;max-width:14ch}
-.hero .lead{margin-top:28px;color:#DCE3E9}
-.hero .buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.hero{position:relative;overflow:hidden;padding:6rem 0 7.5rem;background:var(--blue);color:var(--white)}
+.hero .pm{position:absolute;left:67.7%;top:4.4rem;width:31rem;height:auto;color:var(--white);pointer-events:none}
+.hero h1{grid-column:1/7;font-size:5.5rem;line-height:1.02;letter-spacing:-.04em}
+.hero .sub{grid-column:1/5;margin-top:1.75rem;font-size:1.25rem;line-height:1.55;color:var(--on-blue)}
+.hero .ctas{grid-column:1/-1;display:flex;gap:.75rem;margin-top:2.5rem}
 
-/* Rows: services, engagements */
-.rows{border-top:1px solid var(--sand)}
-.rows > div{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:8px 40px;padding:28px 0;border-bottom:1px solid var(--sand)}
-.rows h3{font-size:clamp(1.25rem,2.2vw,1.625rem)}
-.rows p{max-width:52ch}
-.soft .rows,.soft .rows > div{border-color:#C9D3DB}
+.head{grid-column:1/5;margin-bottom:4rem}
 
-/* Who we work with */
-.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
-.stages div{border-top:2px solid var(--blue);padding-top:20px}
-.stages p{margin-top:8px;color:var(--muted)}
+/* Services: bento, full outline */
+.bento{grid-column:1/-1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:auto auto auto;gap:var(--gap)}
+.svc{border:.0625rem solid var(--line);border-radius:var(--r);background:var(--white);padding:2rem;display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem;transition:border-color .2s}
+.svc:hover{border-color:var(--gold)}
+.svc p{color:var(--muted);max-width:30rem}
+.svc .top-line{display:flex;justify-content:space-between;align-items:flex-start}
+.svc.big{grid-column:1/5;grid-row:1/4;position:relative;overflow:hidden;padding:2.5rem;background:var(--blue);border-color:var(--blue);color:var(--white)}
+.svc.big:hover{border-color:var(--blue)}
+.svc.big .art{display:block;width:100%;height:auto;margin:1rem 0}
+.svc.big .art text{font:600 10px/1 var(--body);letter-spacing:.08em}
+.svc.big h3{font-size:2.25rem}
+.svc.big p{font-size:1.125rem;color:#C9C9C9}
 
-/* Approach */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:28px;counter-reset:step;list-style:none;margin:0;padding:0}
-.steps li{counter-increment:step;border-top:2px solid var(--gold);padding-top:20px}
-.steps li::before{content:counter(step,decimal-leading-zero);display:block;font:700 .875rem/1 var(--display);color:var(--muted);margin-bottom:14px}
-.steps p{margin-top:8px;color:var(--muted)}
+.svc.big > *{position:relative}
+.svc:not(.big){grid-column:5/9}
 
-/* Why */
-.why{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px 64px;align-items:start}
-.why .lead{color:#DCE3E9}
+/* Who: dark outlined tiles */
+.who .intro{grid-column:1/4;align-self:start}
+.tiles{grid-column:4/9;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.tile{border:.0625rem solid var(--line);border-radius:var(--r);padding:2rem;min-height:14rem;display:flex;flex-direction:column;justify-content:space-between;gap:2rem;transition:border-color .2s,background .2s}
+.tile:hover{border-color:var(--gold)}
+.tile .ico{width:2.25rem;height:2.25rem;color:var(--gold)}
+.tile p{margin-top:.5rem;color:var(--muted);max-width:22rem}
 
-/* About */
-.about{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px 72px;align-items:start}
-.portrait{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;background:var(--sand);filter:grayscale(1)}
-.about .role{font:600 1rem/1.4 var(--body);color:var(--muted);margin-top:10px}
-.about .body{margin-top:32px;display:grid;gap:18px;max-width:62ch}
-.fine{font-size:.875rem;color:var(--muted)}
+/* U.S. market: centered statement */
+.statement{text-align:center;min-height:100vh;min-height:100svh;display:flex;align-items:center}
+.statement .container{width:100%}
+.statement h2{grid-column:2/8;font:500 2.3125rem/1.2 var(--display);letter-spacing:-.03em;color:var(--graphite)}
+.statement p{grid-column:2/8;margin-top:1.5rem;font:500 2.3125rem/1.2 var(--display);letter-spacing:-.03em;color:var(--graphite)}
+.statement p .w{color:rgb(37 42 46/.28);transition:color .25s ease-out}
+.statement p .w.on{color:var(--graphite)}
 
+/* Approach — dark grid section, process diagram */
+.approach{position:relative;overflow:hidden;background:var(--blue-deep);color:var(--white);padding:7.5rem 0}
+.approach::before{content:"";position:absolute;left:0;right:0;top:17rem;bottom:0;pointer-events:none;background-image:linear-gradient(rgb(255 255 255/.07) 1px,transparent 1px),linear-gradient(90deg,rgb(255 255 255/.07) 1px,transparent 1px);background-size:3rem 3rem;-webkit-mask:radial-gradient(55% 75% at 50% 45%,#000 25%,transparent 100%);mask:radial-gradient(55% 75% at 50% 45%,#000 25%,transparent 100%)}
+.approach .container{position:relative}
+.ap-text{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2.5rem}
+.ap-head{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.ap-head .label{margin:0;color:rgb(255 255 255/.8)}
+.ap-head h2{font-size:3.5rem;line-height:4rem;letter-spacing:-.075rem;color:var(--white)}
+.ap-head .sub{max-width:27rem;font-size:1.125rem;line-height:1.625rem;color:rgb(255 255 255/.8)}
+.proc{grid-column:1/-1;position:relative;margin:6.5rem 0 1.5rem}
+.proc ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;margin:0;padding:0}
+.proc-line{position:absolute;top:4rem;left:calc(-1 * var(--gutter));right:calc(-1 * var(--gutter));height:1px;background:linear-gradient(90deg,transparent,rgb(255 255 255/.35) 12%,rgb(255 255 255/.35) 88%,transparent);transform-origin:0 50%}
+.proc li{position:relative;display:flex;flex-direction:column;align-items:center}
+.node{position:relative;width:8rem;height:8rem;flex:none;border:.0375rem solid rgb(255 255 255/.9);border-radius:.53rem;background:var(--blue-deep);padding:.875rem 1rem}
+.node b{display:block;font:500 1.2rem/1.2 var(--body);letter-spacing:.025rem}
+.node .num{position:absolute;right:1rem;bottom:.875rem;font:400 .75rem/1 var(--body);color:var(--gold)}
+.node .bars{position:absolute;left:1rem;bottom:1.125rem;width:2.5625rem;height:calc(var(--n) * .4375rem - .3625rem);background:repeating-linear-gradient(to top,#F4F7F8 0 .075rem,transparent .075rem .4375rem)}
+.proc li:first-child .node::before{content:"";position:absolute;top:-.6rem;right:-.6rem;width:.53rem;height:.53rem;border-radius:.07rem;background:var(--gold)}
+.proc li > p{margin-top:1.25rem;max-width:13.75rem;text-align:center;font-size:.9375rem;line-height:1.375rem;color:rgb(255 255 255/.7)}
+.gate{position:absolute;top:4rem;left:100%;width:1.375rem;height:1.375rem;border:.0625rem solid var(--gold);background:var(--blue-deep);transform:translate(-50%,-50%) rotate(45deg)}
+
+/* Why: dark, big outlined mark */
+.why{padding:12.5rem 0}
+.why h2{grid-column:1/4;align-self:start}
+.why h2{color:var(--blue)}
+.why-body{grid-column:6/9;display:flex;flex-direction:column;align-items:flex-start;gap:2rem}
+.why .lead{color:var(--muted);font-size:1.125rem}
+
+/* People */
+.person{row-gap:3rem}
+.person .photo{grid-column:1/4}
+.person .photo img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;background:var(--sand);border-radius:var(--r)}
+.person .text{grid-column:5/9;align-self:end}
+#about .text{align-self:start}
+.person h2{font-size:3.5rem;color:var(--blue)}
+.person .role{margin-top:.75rem;font-weight:500;color:var(--muted)}
+.person .body{margin-top:2.5rem;display:grid;gap:1.125rem;max-width:40rem}
+.person .fine{font-size:.875rem;color:var(--muted)}
+#about .body{gap:0}
+#about .facts{margin-bottom:4rem}
+#about .fine{margin-top:.625rem}
+.person .body{gap:1.75rem}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.facts div{display:flex;flex-direction:column;gap:.5rem}
+.facts b{font:600 2rem/1 var(--display);letter-spacing:-.02em;color:var(--blue)}
+.facts span{font-size:.875rem;line-height:1.45;color:var(--muted)}
+.cap{font:600 .75rem/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.quote{font:600 1.625rem/1.25 var(--display);letter-spacing:-.02em;color:var(--blue);padding-left:1rem;border-left:.125rem solid var(--gold)}
+.brands{display:flex;flex-wrap:wrap;gap:.5rem}
+.brands span{display:inline-flex;align-items:center;justify-content:center;gap:.625rem;min-height:3rem;min-width:6rem;border-radius:var(--r-s);padding:.5rem .875rem;font:600 .875rem/1 var(--display);color:var(--blue);background:var(--soft)}
+.brands .word{font:700 1rem/1 var(--display);letter-spacing:.14em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.logo{flex:none;width:var(--w);height:var(--h);background:var(--blue);-webkit-mask:var(--src) left center/contain no-repeat;mask:var(--src) left center/contain no-repeat}
 .partner{padding-top:0}
-.partner .about{padding-top:clamp(48px,7vw,80px);border-top:1px solid var(--sand)}
-.partner .portrait{max-width:360px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.tags span{border:1px solid var(--sand);border-radius:3px;padding:6px 12px;font-size:.875rem}
+.partner .person{padding:3rem;border-radius:var(--r);background:var(--white);border:.0625rem solid #F1F1F1;box-shadow:var(--shadow)}
+.partner .body > p:not(.quote){color:var(--graphite)}
+.partner .photo{grid-column:1/4;max-width:26.5rem}
+.partner .text{grid-column:4/9}
+.partner h2{font-size:2.5rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tags span{border:.0625rem solid var(--line);border-radius:var(--r-s);padding:.375rem .75rem;font-size:.875rem;color:var(--graphite)}
 
-/* Perspective */
-.places{display:flex;flex-wrap:wrap;gap:10px 32px;margin-top:40px;font:700 clamp(1.25rem,2.4vw,1.75rem)/1.2 var(--display);letter-spacing:-.02em;color:var(--blue)}
-.places span:last-child{color:var(--graphite);border-bottom:2px solid var(--gold)}
+/* International — text with inline country chips + rotating globe */
+.intl .grid{align-items:center}
+.intl .head{grid-column:1/5;max-width:37.5rem;margin:0}
+.intl .lead{margin-top:1.5rem;font-size:1.125rem;line-height:2.1;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:.375rem;padding:.125rem .5rem .125rem .375rem;border-radius:.375rem;background:var(--soft);color:var(--blue);font-weight:500;line-height:1.5;white-space:nowrap}
+.chip{cursor:default;transition:background-color .2s ease,color .2s ease}
+.chip.on{background:var(--blue);color:var(--white)}
+.chip img{width:1.125rem;height:.84375rem;object-fit:cover;border-radius:.125rem;box-shadow:0 0 0 .0625rem rgb(37 42 46/.12)}
+.globe{grid-column:5/9;justify-self:end;position:relative;width:35rem;max-width:100%;aspect-ratio:1;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.globe.dragging{cursor:grabbing}
+.globe svg,.globe > img{display:block;width:100%;height:100%;overflow:visible}
+.globe .land{fill:#E3E8ED;stroke:#fff;stroke-width:.6}
+.globe .land.hl{fill:var(--gold)}
+.globe .land{transition:fill .25s ease}
+.globe .land.hl.on{fill:#B48A47}
+.pin-label.on{background:var(--blue);color:var(--white)}
+.globe .sphere{fill:#fff;stroke:var(--line)}
+.globe .grat{fill:none;stroke:rgb(23 50 74/.07)}
+.globe .pin-halo{fill:rgb(23 50 74/.22)}
+.globe .pin{fill:var(--blue);stroke:#fff;stroke-width:1.5}
+.pin-label{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .5rem .25rem .375rem;border-radius:.375rem;background:var(--white);box-shadow:var(--shadow);font:500 .75rem/1.2 var(--body);color:var(--blue);white-space:nowrap;pointer-events:none;transition:opacity .2s ease}
+.pin-label img{width:1rem;height:.75rem;object-fit:cover;border-radius:.125rem;box-shadow:0 0 0 .0625rem rgb(37 42 46/.12)}
 
-/* Selected work */
-.work{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
-.work div{border-top:1px solid var(--graphite);padding-top:20px}
-.work p{margin-top:10px;color:var(--muted)}
-.work + .fine{margin-top:40px}
+/* Selected work: sticky head + stacking cards */
+.work .grid{align-items:start}
+.work .head{grid-column:1/4;position:sticky;top:7.5rem;margin-bottom:0}
+.work .fine{margin-top:2rem;font-size:.875rem;color:var(--muted);max-width:22rem}
+.cases{grid-column:4/9;display:grid;gap:2rem;padding-bottom:4rem}
+.case{position:sticky;top:calc(7.5rem + var(--i) * var(--peek,4.5rem));margin-bottom:calc((2 - var(--i)) * var(--peek,4.5rem));min-height:24rem;display:flex;flex-direction:column;padding:2.5rem;background:var(--white);border:.0625rem solid var(--line);border-radius:var(--r);transform-origin:50% 0}
+.case .n{margin-bottom:auto}
+.case h3{margin-top:5rem;font-size:2.25rem;color:var(--blue)}
+.case p{margin-top:1rem;color:var(--muted);max-width:34rem;font-size:1.125rem}
 
-/* Contact */
-.contact h2{max-width:16ch}
-.contact .lead{margin-top:28px;color:#DCE3E9}
-.contact .card{margin-top:48px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:32px;padding-top:32px;border-top:1px solid rgb(255 255 255/.18)}
-.contact .who{line-height:1.6}
-.contact .who b{font-family:var(--display);font-size:1.25rem}
-.contact .buttons{display:flex;flex-wrap:wrap;gap:12px}
-footer{background:var(--blue-deep);color:var(--on-blue-muted);font-size:.875rem;padding:28px 0}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+/* Ways: 2x2, one featured */
+.ways .head{grid-column:1/4}
+.boxes{grid-column:4/9;display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.box{background:var(--white);border:.0625rem solid #F1F1F1;border-radius:var(--r);box-shadow:var(--shadow);padding:2rem;min-height:12rem;display:flex;flex-direction:column;justify-content:space-between}
+.box p{color:var(--muted);margin-top:1.5rem}
+.box.feat{border-color:var(--gold)}
+.box.feat .tag{align-self:flex-start;margin-bottom:1.5rem;font:600 .75rem/1 var(--body);color:var(--blue);background:var(--gold);border-radius:var(--r-s);padding:.375rem .5rem}
 
-@media (max-width:960px){
-  .stages{grid-template-columns:1fr 1fr}
-  .steps{grid-template-columns:1fr 1fr 1fr}
-  .work{grid-template-columns:1fr}
-  .why,.about{grid-template-columns:1fr}
-  .portrait{max-width:440px}
-}
-@media (max-width:720px){
-  .nav a:not(.btn){display:none}
-  .top .wrap{height:64px}
-  section[id]{scroll-margin-top:64px}
-  .brand .mark{width:38px;height:35px}
-  .rows > div{grid-template-columns:1fr;padding:24px 0}
-  .stages,.steps{grid-template-columns:1fr;gap:28px}
-  .hero .buttons .btn{flex:1 1 auto;justify-content:center}
-}
-@media (max-width:380px){
-  .brand span{display:none}
+/* Contact: CTA card */
+.cta{padding:0 0 var(--gutter)}
+.card{grid-column:1/-1;position:relative;overflow:hidden;min-height:34.6875rem;background:var(--blue-deep);color:var(--white);padding:4rem 3rem 3rem;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));column-gap:var(--gap);row-gap:4rem;border-radius:var(--r)}
+.card .watermark{position:absolute;right:-2.7rem;top:11.125rem;width:22.25rem;height:auto;fill:var(--gold);color:var(--gold)}
+.card h2{grid-column:1/6;font-size:4rem;letter-spacing:-.035em;position:relative;text-wrap:wrap}
+.card .lead{grid-column:1/6;align-self:end;font-size:1.125rem;color:var(--on-blue)}
+.card .who{grid-column:6/9;align-self:end;line-height:1.6;color:var(--on-blue-muted)}
+.card .who b{font:600 1.25rem/1.4 var(--display);color:var(--white)}
+.card .ctas{grid-column:1/5;display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.card .ctas .btn-lg{width:auto}
+
+/* Footer */
+footer{padding:4rem 0 1.5rem;background:var(--blue-deep);color:var(--on-blue)}
+footer .pm{width:2.5rem;height:2.3rem;color:var(--gold)}
+footer .first{grid-column:1/3;display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;min-height:9.75rem;font-size:.875rem}
+footer .col{font-size:.875rem;display:flex;flex-direction:column;gap:.5rem}
+footer .col b{font-weight:500;color:rgb(185 196 206/.5);margin-bottom:.25rem}
+footer .col a{font-weight:500}
+footer .c1{grid-column:6/7} footer .c2{grid-column:7/8} footer .c3{grid-column:8/9}
+footer a:hover{color:var(--white);text-decoration:underline}
+.legal{grid-column:1/-1;display:flex;justify-content:space-between;margin-top:4rem;padding-top:1.5rem;border-top:.0625rem solid rgb(255 255 255/.1);font-size:.75rem;color:var(--on-blue-muted)}
+
+/* Grid overlay: press G */
+.guides{position:fixed;inset:0;z-index:100;pointer-events:none;display:none}
+.guides .grid{height:100%}
+.guides i{background:rgb(201 161 95/.1);border-left:.0625rem solid rgb(201 161 95/.4);border-right:.0625rem solid rgb(201 161 95/.4)}
+.guides.on{display:block}
+
+/* Tablet */
+@media (max-width:991px){
+  :root{--section:5rem}
+  .nav .links{display:none}
+  .hero{padding-bottom:5rem}
+  .hero .pm{left:auto;right:-6rem;top:auto;bottom:-4rem;width:20rem;opacity:.1}
+  .hero h1{grid-column:1/-1;font-size:3.75rem}
+  .hero .sub,.statement h2,.statement p{grid-column:1/-1}
+  .intl .head,.globe{grid-column:1/-1}
+  .globe{margin-top:3rem;width:min(35rem,100%)}
+  .ap-head h2{font-size:2.75rem;line-height:1.15}
+  .proc{margin-top:3.5rem}
+  .proc ol{grid-template-columns:1fr;row-gap:2.75rem}
+  .proc-line{top:-2.5rem;bottom:-2.5rem;left:2.75rem;right:auto;width:1px;height:auto;background:linear-gradient(transparent,rgb(255 255 255/.35) 8%,rgb(255 255 255/.35) 92%,transparent);transform-origin:50% 0}
+  .proc li{flex-direction:row;align-items:center;gap:1.5rem}
+  .node{width:5.5rem;height:5.5rem;padding:.625rem}
+  .node b{font-size:.9375rem}
+  .node .num{right:.625rem;bottom:.625rem;font-size:.6875rem}
+  .node .bars{left:.625rem;bottom:.875rem;width:1.75rem;height:calc(var(--n) * .3125rem - .2375rem);background:repeating-linear-gradient(to top,#F4F7F8 0 .075rem,transparent .075rem .3125rem)}
+  .proc li > p{margin:0;max-width:none;text-align:left}
+  .gate{top:auto;bottom:-1.375rem;left:2.75rem;width:1rem;height:1rem;transform:translate(-50%,50%) rotate(45deg)}
+  .head,.who .intro,.tiles,.why h2,.why-body,.intl .head,.intl .lead,.ways .head,.boxes,.work .head,.work .fine{grid-column:1/-1}
+  .who .intro{margin-bottom:3rem}
+  .why{padding:6rem 0}
+  .why h2{margin-bottom:2rem}
+  .svc.big{grid-column:1/-1;grid-row:auto;min-height:20rem}
+  .svc:not(.big){grid-column:1/-1}
+  .person .photo{grid-column:1/5} .person .text{grid-column:1/-1}
+  .partner .person{padding:2rem}
+  .partner .photo{grid-column:1/4} .partner .text{grid-column:1/-1}
+  .work .head{position:static;grid-column:1/-1;margin-bottom:3rem}
+  .cases{grid-column:1/-1}
+  .case{top:calc(5.5rem + var(--i) * var(--peek,4.5rem));min-height:18rem}
+  .case h3{margin-top:3rem;font-size:1.75rem}
+  .card h2,.card .lead,.card .who,.card .ctas{grid-column:1/-1}
+  .card h2{font-size:3rem}
+  .card .watermark{width:12rem;right:-1.5rem;top:auto;bottom:-1rem}
+  .card{min-height:0}
+  footer .first{grid-column:1/-1;margin-bottom:2.5rem}
+  footer .c1{grid-column:1/3} footer .c2{grid-column:3/5} footer .c3{grid-column:5/9}
+  }
+/* Mobile */
+@media (max-width:479px){
+  :root{--section:3.75rem;--gutter:1rem;--gap:.75rem}
+  body{font-size:.9375rem}
+  h2{font-size:1.75rem}
+  h3{font-size:1.1875rem}
+  .lead{font-size:1.0625rem}
+  .top .grid{height:3.75rem}
+  .brand{grid-column:1/6}
+  .brand .pm{width:2.25rem;height:2.0625rem}
+  .brand span{font-size:.6875rem}
+  .nav{grid-column:6/9}
+  .nav .btn{min-width:0;height:2.25rem;gap:.75rem;padding:0 .625rem 0 .75rem;font-size:.8125rem}
+  .hero{padding-top:3rem}
+  .hero .pm{width:14rem;right:-4rem;bottom:-2.5rem}
+  .hero h1{font-size:2.5rem}
+  .hero .sub{font-size:1rem;margin-top:1.25rem}
+  .hero .ctas{flex-direction:column;gap:.5rem}
+  .hero .ctas .btn{width:100%}
+  .hero{padding-bottom:3.75rem}
+  .head{margin-bottom:2rem}
+  .svc,.svc.big{padding:1.25rem;gap:1.5rem}
+  .svc.big{min-height:16rem}
+  .svc.big h3{font-size:1.625rem}
+
+  .tiles,.boxes{grid-template-columns:1fr}
+  .tile{min-height:0;padding:1.25rem;gap:1.5rem}
+  .box{min-height:0;padding:1.25rem}
+  .statement h2,.statement p{font-size:1.375rem}
+
+  .person .photo{grid-column:1/-1}
+  .person h2{font-size:2.25rem}
+  .person .body{margin-top:1.5rem}
+  .facts{grid-template-columns:1fr}
+  .facts div{flex-direction:row;align-items:baseline;gap:1rem}
+  .facts b{min-width:5.5rem;font-size:1.375rem}
+  .quote{font-size:1.25rem}
+  .partner .person{padding:1.25rem;row-gap:1.5rem}
+  .partner .photo{grid-column:1/5}
+  .partner h2{font-size:1.875rem}
+  .case{--peek:3.25rem;padding:1.5rem;min-height:16rem;top:calc(4.75rem + var(--i) * var(--peek))}
+  .case h3{font-size:1.375rem}
+  .case p{font-size:.9375rem}
+    .card{padding:2rem 1.25rem 1.25rem;row-gap:2rem}
+  .card h2{font-size:2.125rem;padding-right:4rem}
+  .card .watermark{display:none}
+  .card .ctas{grid-template-columns:1fr;gap:.5rem;padding-top:1.5rem}
+  .card .ctas .btn{width:100%}
+  .btn-lg{height:4.5rem}
+  .approach{padding:4.5rem 0}
+  .approach::before{top:20rem;background-size:2rem 2rem}
+  .ap-text{gap:1.75rem}
+  .ap-head h2{font-size:2rem;line-height:2.375rem;letter-spacing:-.05rem}
+  .ap-head .sub{font-size:1rem;line-height:1.5rem}
+  .proc{margin-top:3rem}
+  .intl .lead{font-size:1rem;line-height:2}
+  .globe{width:80%;justify-self:start}
+  footer .c1,footer .c2{grid-column:span 4} footer .c3{grid-column:1/-1;margin-top:1.5rem}
+    .legal{flex-direction:column;gap:.5rem}
 }
 </style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="pm" viewBox="70 30 450 486"><g fill="currentColor"><path d="M84 290V40h170c82 0 128 44 128 110s-46 110-128 110H188v-43h66c57 0 83-25 83-67s-26-67-83-67H129v168z"/><path d="M84 456 196 345l88 76L507 205l-13 67-210 206-88-78z"/><path d="M84 506v-85l45-38v123zm355 0V345l45-42v203z"/></g></symbol>
+  <symbol id="pm" viewBox="70 30 450 486"><g><path d="M84 290V40h170c82 0 128 44 128 110s-46 110-128 110H188v-43h66c57 0 83-25 83-67s-26-67-83-67H129v168z"/><path d="M84 456 196 345l88 76L507 205l-13 67-210 206-88-78z"/><path d="M84 506v-85l45-38v123zm355 0V345l45-42v203z"/></g></symbol>
 </svg>
 
 <header class="top">
-  <div class="wrap">
+  <div class="container grid">
     <a class="brand" href="#top" aria-label="Martynov Brand Advisory, home">
-      <svg class="mark" aria-hidden="true"><use href="#pm"/></svg>
+      <svg class="pm" fill="currentColor" aria-hidden="true"><use href="#pm"/></svg>
       <span>Martynov<br>Brand Advisory</span>
     </a>
     <nav class="nav" aria-label="Main">
-      <a href="#services">Services</a>
-      <a href="#approach">Approach</a>
-      <a href="#about">About</a>
+      <div class="links">
+        <a href="#services">Services</a>
+        <a href="#approach">Approach</a>
+        <a href="#about">About</a>
+      </div>
       <a class="btn btn-gold" href="#contact">Let’s Talk</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
-  <!-- Hero -->
-  <section class="dark hero">
-    <div class="wrap">
-      <svg class="mark" viewBox="70 30 450 486" role="img" aria-label="PM monogram"><use href="#pm"/></svg>
+  <section class="hero">
+    <div class="container grid">
+      <svg class="pm" fill="currentColor" aria-hidden="true"><use href="#pm"/></svg>
       <h1>Building brands. Opening markets.</h1>
-      <p class="lead">U.S. market entry and commercial development for beverage and consumer brands. We help international brands establish a U.S. business and emerging American brands strengthen theirs, from route-to-market decisions to distributor management and sales execution.</p>
-      <div class="buttons">
-        <a class="btn btn-gold" href="#contact">Let’s Talk <span class="arr" aria-hidden="true">→</span></a>
-        <a class="btn btn-outline" href="#services">Explore services</a>
+      <p class="sub">U.S.&nbsp;market entry and&nbsp;commercial development for&nbsp;beverage and&nbsp;consumer brands, from&nbsp;route-to-market decisions to&nbsp;distributor management and&nbsp;sales execution.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="#contact">Let’s Talk</a>
+        <a class="btn btn-line on-dark" href="#services">Explore services</a>
       </div>
     </div>
   </section>
 
-  <!-- Services -->
   <section class="section" id="services">
-    <div class="wrap">
-      <p class="label">Services</p>
-      <h2>From the first market decision to the next stage of growth.</h2>
-      <div class="rows">
-        <div><h3>Market Entry</h3><p>Market assessment, state priorities, pricing, launch economics and a practical plan for entering the U.S.</p></div>
-        <div><h3>Route to Market</h3><p>Importer and distributor assessment, partner selection, network design and expansion into new states.</p></div>
-        <div><h3>Commercial Management</h3><p>Distributor relationships, sales plans, forecasts, trade programs, key accounts and performance reviews.</p></div>
-        <div><h3>Brand &amp; Trade Development</h3><p>Channel priorities, portfolio decisions, retail and on-premise plans, and the tools needed to support the trade.</p></div>
+    <div class="container grid">
+      <div class="head">
+        <p class="label">Services</p>
+        <h2>From&nbsp;the&nbsp;first market decision to&nbsp;the&nbsp;next stage of&nbsp;growth.</h2>
+      </div>
+      <div class="bento">
+        <div class="svc big">
+          <span class="n">01</span>
+          <img class="art" src="img/market-entry.svg" width="606" height="322" alt="">
+          <div><h3>Market Entry</h3><p style="margin-top:1rem">Market assessment, state priorities, pricing, launch economics and&nbsp;a&nbsp;practical plan for&nbsp;entering the&nbsp;U.S.</p></div>
+        </div>
+        <div class="svc"><div class="top-line"><h3>Route to&nbsp;Market</h3><span class="n">02</span></div><p>Importer and&nbsp;distributor assessment, partner selection, network design and&nbsp;expansion into&nbsp;new states.</p></div>
+        <div class="svc"><div class="top-line"><h3>Commercial Management</h3><span class="n">03</span></div><p>Distributor relationships, sales plans, forecasts, trade programs, key accounts and&nbsp;performance reviews.</p></div>
+        <div class="svc"><div class="top-line"><h3>Brand &amp; Trade Development</h3><span class="n">04</span></div><p>Channel priorities, portfolio decisions, retail and&nbsp;on-premise plans, and&nbsp;the&nbsp;tools needed to&nbsp;support the&nbsp;trade.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Who we work with -->
-  <section class="section white">
-    <div class="wrap">
-      <p class="label">Who we work with</p>
-      <h2>The right support for the stage you are in.</h2>
-      <div class="stages">
-        <div><h3>Entering</h3><p>International brands preparing for their first U.S. launch.</p></div>
-        <div><h3>Building</h3><p>Brands seeking importers, distributors and a workable commercial structure.</p></div>
-        <div><h3>Expanding</h3><p>U.S. businesses entering additional states, channels and accounts.</p></div>
-        <div><h3>Rebuilding</h3><p>Established brands addressing stalled distribution, weak execution or difficult economics.</p></div>
+  <section class="section who">
+    <div class="container grid">
+      <div class="intro">
+        <p class="label">Who&nbsp;we&nbsp;work with</p>
+        <h2>The&nbsp;right support for&nbsp;the&nbsp;stage you&nbsp;are&nbsp;in.</h2>
+      </div>
+      <div class="tiles">
+        <div class="tile"><svg class="ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M174,216a6,6,0,0,1-6,6H24a6,6,0,0,1,0-12H168A6,6,0,0,1,174,216ZM245.9,92.78a6,6,0,0,1-2.82,4l-147.41,88a38.22,38.22,0,0,1-19.23,5.23,37.8,37.8,0,0,1-25.92-10.33l-.1-.09L14.37,144.36a14,14,0,0,1,4-23l3-1.49a6,6,0,0,1,4.56-.29l29.15,9.83,23.17-14-23.7-23a14,14,0,0,1,4-23.18l.24-.1,7.15-2.71a6,6,0,0,1,4.19,0l54.84,20.18,52.38-31.27A37.81,37.81,0,0,1,226,64l.09.11L244.73,88A6,6,0,0,1,245.9,92.78ZM231.09,90,216.67,71.53a25.86,25.86,0,0,0-33.26-5.89L128.6,98.36a6,6,0,0,1-5.15.48L68,78.45l-4.9,1.85A1.91,1.91,0,0,0,62,81.77a2,2,0,0,0,.63,1.82l.17.15,29.35,28.49a6,6,0,0,1-1.07,9.44L58.89,141.16a6,6,0,0,1-5,.55l-29.45-9.94-.93.46-.28.13a2,2,0,0,0-.58,3.29l.1.09,36,35.28a25.84,25.84,0,0,0,30.81,3.47Z"/></svg><div><h3>Entering</h3><p>International brands preparing for&nbsp;their first U.S.&nbsp;launch.</p></div></div>
+        <div class="tile"><svg class="ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M252.51,108.8,227,57.75a14,14,0,0,0-18.78-6.27L182.66,64.26,129.53,50.2a6.1,6.1,0,0,0-3.06,0L73.34,64.26,47.79,51.48A14,14,0,0,0,29,57.75L3.49,108.8a14,14,0,0,0,6.26,18.78L36.9,141.16l55.61,39.72a6,6,0,0,0,2,.94l64,16A6.08,6.08,0,0,0,160,198a6,6,0,0,0,4.24-1.76l55.31-55.31,26.7-13.35a14,14,0,0,0,6.26-18.78Zm-53,35.16-35.8-28.68a6,6,0,0,0-8,.45c-18.65,18.79-39.5,16.42-52.79,7.92a2,2,0,0,1-.94-1.5,1.9,1.9,0,0,1,.51-1.55L146.43,78h33.86l28.41,56.82ZM14.11,115.69a2,2,0,0,1,.11-1.52L39.74,63.11a2,2,0,0,1,1.8-1.1,2,2,0,0,1,.89.21l22.21,11.1L37.32,128l-22.21-11.1A2,2,0,0,1,14.11,115.69Zm144.05,69.67-59.6-14.9L47.66,134.1,76.84,75.75,128,62.21l14.8,3.92a5.92,5.92,0,0,0-3,1.57L94.1,112.05a14,14,0,0,0,2.39,21.72c20.22,12.92,44.75,10.49,63.8-5.89L191,152.5Zm83.73-69.67a2,2,0,0,1-1,1.16L218.68,128,191.36,73.32l22.21-11.1a2,2,0,0,1,1.53-.11,2,2,0,0,1,1.16,1l25.52,51.06A2,2,0,0,1,241.89,115.69Zm-112,101.76a6,6,0,0,1-7.27,4.37L80.89,211.39a5.88,5.88,0,0,1-2-.94L52.52,191.64a6,6,0,1,1,7-9.77L84.91,200l40.61,10.15A6,6,0,0,1,129.88,217.45Z"/></svg><div><h3>Building</h3><p>Brands seeking importers, distributors and&nbsp;a&nbsp;workable commercial structure.</p></div></div>
+        <div class="tile"><svg class="ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M227.69,51.27a6,6,0,0,0-5.15-1.09L160.7,65.64l-62-31a6,6,0,0,0-4.14-.45l-64,16A6,6,0,0,0,26,56V200a6,6,0,0,0,7.46,5.82L95.3,190.36l62,31a6,6,0,0,0,4.14.45l64-16A6,6,0,0,0,230,200V56A6,6,0,0,0,227.69,51.27ZM102,49.71l52,26V206.29l-52-26Zm-64,11,52-13V179.32l-52,13ZM218,195.32l-52,13V76.68l52-13Z"/></svg><div><h3>Expanding</h3><p>U.S.&nbsp;businesses entering additional states, channels and&nbsp;accounts.</p></div></div>
+        <div class="tile"><svg class="ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M222,48V96a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h33.52L183.47,72a81.51,81.51,0,0,0-57.53-24h-.46A81.5,81.5,0,0,0,68.19,71.28a6,6,0,1,1-8.38-8.58,93.38,93.38,0,0,1,65.67-26.76H126a93.45,93.45,0,0,1,66,27.53l18,18V48a6,6,0,0,1,12,0ZM187.81,184.72a81.5,81.5,0,0,1-57.29,23.34h-.46a81.51,81.51,0,0,1-57.53-24L54.48,166H88a6,6,0,0,0,0-12H40a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V174.48l18,18.05a93.45,93.45,0,0,0,66,27.53h.52a93.38,93.38,0,0,0,65.67-26.76,6,6,0,1,0-8.38-8.58Z"/></svg><div><h3>Rebuilding</h3><p>Established brands addressing stalled distribution, weak execution or&nbsp;difficult economics.</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- The U.S. market -->
-  <section class="section soft">
-    <div class="wrap">
-      <p class="label">The U.S. market</p>
-      <h2>The U.S. is a collection of markets.</h2>
-      <p class="lead">State rules, distribution structures, pricing and retail dynamics vary widely. For alcohol brands, the three-tier system adds another set of decisions. A distributor agreement alone does not create demand. We help brands decide where to invest, which partners to choose and how to manage the business after launch.</p>
+  <section class="section statement">
+    <div class="container grid">
+      <h2>The&nbsp;U.S.&nbsp;is&nbsp;a&nbsp;collection of&nbsp;markets.</h2>
+      <p class="lead">State rules, distribution structures, pricing and&nbsp;retail dynamics vary widely. For&nbsp;alcohol brands, the&nbsp;three-tier system adds another set of&nbsp;decisions. A&nbsp;distributor agreement alone does not&nbsp;create demand. We&nbsp;help brands decide where to&nbsp;invest, which partners to&nbsp;choose and&nbsp;how&nbsp;to&nbsp;manage the&nbsp;business after launch.</p>
     </div>
   </section>
 
-  <!-- Approach -->
-  <section class="section" id="approach">
-    <div class="wrap">
-      <p class="label">Our approach</p>
-      <h2>A plan built to be used.</h2>
-      <ol class="steps">
-        <li><h3>Assess</h3><p>Review the brand, category, economics and opportunity.</p></li>
-        <li><h3>Design</h3><p>Set market priorities and the commercial model.</p></li>
-        <li><h3>Build</h3><p>Engage appropriate importers and distribution partners.</p></li>
-        <li><h3>Execute</h3><p>Support launches, accounts, programs and management.</p></li>
-        <li><h3>Improve</h3><p>Track results and adjust the plan as the business grows.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Why -->
-  <section class="section dark">
-    <div class="wrap why">
-      <div>
-        <p class="label">Why Martynov Brand Advisory</p>
-        <h2>Senior experience, directly involved.</h2>
+  <section class="approach" id="approach">
+    <div class="container grid">
+      <div class="ap-text">
+        <div class="ap-head">
+          <p class="label">Our&nbsp;approach</p>
+          <h2 data-split>A&nbsp;plan built to&nbsp;be&nbsp;used.</h2>
+          <p class="sub" data-split>Five steps, from&nbsp;the&nbsp;first assessment of&nbsp;the&nbsp;brand to&nbsp;running and&nbsp;improving the&nbsp;business in&nbsp;the&nbsp;U.S.</p>
+        </div>
+        <a class="btn btn-glass" href="#contact">Let’s Talk</a>
       </div>
-      <p class="lead">Martynov Brand Advisory is led by an operator who has managed brands, sales teams, distributor relationships and P&amp;Ls. Clients work directly with Pavel from the first commercial discussion through execution. The work combines international perspective with hands-on U.S. market experience.</p>
+      <div class="proc">
+        <span class="proc-line" aria-hidden="true"></span>
+        <ol>
+        <li style="--n:1"><div class="node"><b>Assess</b><i class="bars"></i><span class="num">01</span></div><p>Review the&nbsp;brand, category, economics and&nbsp;opportunity.</p><i class="gate" aria-hidden="true"></i></li>
+        <li style="--n:2"><div class="node"><b>Design</b><i class="bars"></i><span class="num">02</span></div><p>Set market priorities and&nbsp;the&nbsp;commercial model.</p><i class="gate" aria-hidden="true"></i></li>
+        <li style="--n:3"><div class="node"><b>Build</b><i class="bars"></i><span class="num">03</span></div><p>Engage appropriate importers and&nbsp;distribution partners.</p><i class="gate" aria-hidden="true"></i></li>
+        <li style="--n:4"><div class="node"><b>Execute</b><i class="bars"></i><span class="num">04</span></div><p>Support launches, accounts, programs and&nbsp;management.</p><i class="gate" aria-hidden="true"></i></li>
+        <li style="--n:5"><div class="node"><b>Improve</b><i class="bars"></i><span class="num">05</span></div><p>Track results and&nbsp;adjust the&nbsp;plan as&nbsp;the&nbsp;business grows.</p></li>
+        </ol>
+      </div>
     </div>
   </section>
 
-  <!-- About -->
+  <section class="section why">
+    <div class="container grid">
+      <h2>Senior experience, directly involved.</h2>
+      <div class="why-body"><p class="lead">Martynov Brand Advisory is&nbsp;led by&nbsp;an&nbsp;operator who&nbsp;has managed brands, sales teams, distributor relationships and&nbsp;P&amp;Ls. Clients work directly with&nbsp;Pavel from&nbsp;the&nbsp;first commercial discussion through execution. The&nbsp;work combines international perspective with&nbsp;hands-on&nbsp;U.S.&nbsp;market experience.</p>
+        <a class="btn btn-gold btn-lg" href="#contact">Let’s talk</a></div>
+    </div>
+  </section>
+
   <section class="section" id="about">
-    <div class="wrap about">
-      <!-- Portrait: replace with the approved photo when ready -->
-      <img class="portrait" src="img/pavel.jpg" width="868" height="1280" alt="Pavel Martynov, Founder and Managing Partner">
-      <div>
+    <div class="container grid person">
+      <div class="photo"><img src="img/pavel.jpg" width="868" height="1280" alt="Pavel Martynov, Founder and Managing Partner"></div>
+      <div class="text">
         <p class="label">About</p>
         <h2>Pavel Martynov</h2>
         <p class="role">Founder &amp; Managing Partner</p>
         <div class="body">
-          <p>Pavel has held roles in key accounts, national sales, commercial leadership, general management and as CEO. His work spans spirits, beer, soft drinks, juice, food and other consumer categories, from smaller operations to businesses with annual revenue of approximately $250 million.</p>
-          <p>His professional experience includes roles and projects involving the Coca-Cola system, HEINEKEN, Russian Standard, BELUGA, Brown-Forman and Finlandia Vodka.</p>
-          <p>Based in Florida, Pavel works with brands and commercial partners across the United States.</p>
-          <p class="fine">Company names describe Pavel’s professional background; they are not endorsements of Martynov Brand Advisory.</p>
+          <div class="facts">
+            <div><b>CEO</b><span>From&nbsp;key accounts and&nbsp;national sales to&nbsp;general management</span></div>
+            <div><b>$250M</b><span>Approximate annual revenue of&nbsp;the&nbsp;largest business led</span></div>
+            <div><b>Florida</b><span>Working with&nbsp;brands across the&nbsp;United States</span></div>
+          </div>
+          <div class="group"><p class="cap">Experience includes</p>
+          <div class="brands"><span><i class="logo" style="--src:url(img/logos/cocacola.svg);--w:4.5rem;--h:1.5rem"></i><b class="sr">Coca-Cola system</b></span><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">HEINEKEN</b></span><span><i class="logo" style="--src:url(img/logos/russianstandard.svg);--w:4.25rem;--h:1.625rem"></i><b class="sr">Russian Standard</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">BELUGA</b></span><span><i class="logo" style="--src:url(img/logos/brownforman.svg);--w:6rem;--h:0.75rem"></i><b class="sr">Brown-Forman</b></span><span class="word">FINLANDIA</span></div></div>
+          <p class="fine">* Company names describe Pavel’s professional background; they are&nbsp;not&nbsp;endorsements of&nbsp;Martynov Brand Advisory.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Partner -->
   <section class="section partner" id="partner">
-    <div class="wrap about">
-      <img class="portrait" src="img/konstantin.jpg" width="937" height="1249" alt="Konstantin Emma">
-      <div>
-        <p class="label">Partner</p>
-        <h2>Konstantin Emma</h2>
-        <p class="role">Commercial Strategy &amp; Analytics</p>
-        <div class="body">
-          <p class="lead">Where to compete. Where to invest. How much.</p>
-          <p>Five years turning commercial data into board decisions across spirits, FMCG and e-commerce. Currently leading business analytics and strategy for an international spirits group.</p>
-          <p class="muted">Previously Heineken Group, Beluga Vodka, Groupe SEB and EY.</p>
-          <div class="tags">
-            <span>Market and portfolio prioritisation</span><span>Pricing and positioning</span><span>Route-to-market</span><span>Trade investment</span><span>Reporting and planning</span><span>AI tools</span>
+    <div class="container">
+      <div class="grid person">
+        <div class="photo"><img src="img/konstantin.jpg" width="937" height="1249" alt="Konstantin Emma"></div>
+        <div class="text">
+          <p class="label">Partner</p>
+          <h2>Konstantin Emma</h2>
+          <p class="role">Commercial Strategy &amp; Analytics</p>
+          <div class="body">
+            <p class="quote">Where to&nbsp;compete. Where to&nbsp;invest. How&nbsp;much.</p>
+            <p>Five years turning commercial data into&nbsp;board decisions across spirits, FMCG and&nbsp;e-commerce. Currently leading business analytics and&nbsp;strategy for&nbsp;an&nbsp;international spirits group.</p>
+            <div class="group"><p class="cap">Previously</p>
+            <div class="brands"><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">Heineken Group</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">Beluga Vodka</b></span><span><i class="logo" style="--src:url(img/logos/groupeseb.svg);--w:0.75rem;--h:1.25rem"></i>Groupe SEB</span><span><i class="logo" style="--src:url(img/logos/ey.svg);--w:1.5rem;--h:1.5rem"></i><b class="sr">EY</b></span></div></div>
+            <div class="group"><p class="cap">Focus areas</p>
+            <div class="tags"><span>Market and&nbsp;portfolio prioritisation</span><span>Pricing and&nbsp;positioning</span><span>Route-to-market</span><span>Trade investment</span><span>Reporting and&nbsp;planning</span><span>AI tools</span></div></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- International perspective -->
-  <section class="section white">
-    <div class="wrap">
-      <p class="label">International perspective</p>
-      <h2>International background. U.S. focus.</h2>
-      <p class="lead">Pavel has lived and worked across Russia, Montenegro, Turkey, Cyprus and the United States. That experience helps him work with founders and teams who know their home markets well but need a clear view of how U.S. distribution, sales and decision-making work.</p>
-      <p class="places" aria-hidden="true"><span>Russia</span><span>Montenegro</span><span>Turkey</span><span>Cyprus</span><span>United States</span></p>
-    </div>
-  </section>
-
-  <!-- Selected work -->
-  <section class="section">
-    <div class="wrap">
-      <p class="label">Selected work</p>
-      <h2>The work behind the advice.</h2>
-      <div class="work">
-        <div><h3>U.S. distribution</h3><p>Commercial planning and distributor development for an international spirits brand across multiple states.</p></div>
-        <div><h3>Market entry</h3><p>Market priorities, route-to-market options and launch planning for beverage businesses considering the U.S.</p></div>
-        <div><h3>Commercial leadership</h3><p>Sales organizations, key account plans and trade programs for consumer goods businesses at different stages of growth.</p></div>
+  <section class="section intl">
+    <div class="container grid">
+      <div class="head">
+        <p class="label">International perspective</p>
+        <h2 data-split>International background. U.S.&nbsp;focus.</h2>
+        <p class="lead">Pavel has lived and&nbsp;worked across&nbsp;<span class="chip" data-c="ru" tabindex="0"><img src="img/flags/ru.svg" width="18" height="14" alt="">Russia</span>, <span class="chip" data-c="me" tabindex="0"><img src="img/flags/me.svg" width="18" height="14" alt="">Montenegro</span>, <span class="chip" data-c="tr" tabindex="0"><img src="img/flags/tr.svg" width="18" height="14" alt="">Turkey</span>, <span class="chip" data-c="cy" tabindex="0"><img src="img/flags/cy.svg" width="18" height="14" alt="">Cyprus</span> and&nbsp;the&nbsp;<span class="chip" data-c="us" tabindex="0"><img src="img/flags/us.svg" width="18" height="14" alt="">United States</span>. That&nbsp;experience helps him&nbsp;work with&nbsp;founders and&nbsp;teams who&nbsp;know their home markets well but&nbsp;need a&nbsp;clear view of&nbsp;how&nbsp;U.S.&nbsp;distribution, sales and&nbsp;decision-making work.</p>
       </div>
-      <p class="fine">Selected work reflects Pavel’s professional experience. Client details and outcomes are shared only with permission.</p>
-    </div>
-  </section>
-
-  <!-- Ways to work together -->
-  <section class="section soft">
-    <div class="wrap">
-      <p class="label">Ways to work together</p>
-      <h2>Work together where it matters most.</h2>
-      <div class="rows">
-        <div><h3>Market Entry Project</h3><p>A defined assessment and launch roadmap.</p></div>
-        <div><h3>Distributor Development</h3><p>Partner identification, assessment and engagement.</p></div>
-        <div><h3>Fractional Commercial Leadership</h3><p>Ongoing senior support while a brand builds its U.S. organization.</p></div>
-        <div><h3>Focused Advisory</h3><p>Help with a specific pricing, distribution, portfolio or sales challenge.</p></div>
+      <div class="globe" role="img" aria-label="Globe marking Russia, Montenegro, Turkey, Cyprus and the United States. Drag to rotate.">
+        <img src="img/globe-static.svg" width="480" height="480" alt="">
       </div>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section class="section dark contact" id="contact">
-    <div class="wrap">
-      <p class="label">Contact</p>
-      <h2>Let’s discuss your U.S. business.</h2>
-      <p class="lead">Tell us where your brand stands and what you want to build. We will start with a conversation about the opportunity, the constraints and the next useful step.</p>
+  <section class="section work">
+    <div class="container grid">
+      <div class="head">
+        <p class="label">Selected work</p>
+        <h2>The&nbsp;work behind the&nbsp;advice.</h2>
+        <p class="fine">Selected work reflects Pavel’s professional experience. Client details and&nbsp;outcomes are&nbsp;shared only with&nbsp;permission.</p>
+      </div>
+      <div class="cases">
+        <article class="case" style="--i:0"><span class="n">Spirits</span><h3>U.S.&nbsp;distribution</h3><p>Commercial planning and&nbsp;distributor development for&nbsp;an&nbsp;international spirits brand across multiple states.</p></article>
+        <article class="case" style="--i:1"><span class="n">Beverage</span><h3>Market entry</h3><p>Market priorities, route-to-market options and&nbsp;launch planning for&nbsp;beverage businesses considering the&nbsp;U.S.</p></article>
+        <article class="case" style="--i:2"><span class="n">Consumer goods</span><h3>Commercial leadership</h3><p>Sales organizations, key account plans and&nbsp;trade programs for&nbsp;consumer goods businesses at&nbsp;different stages of&nbsp;growth.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ways">
+    <div class="container grid">
+      <div class="head">
+        <p class="label">Ways to&nbsp;work together</p>
+        <h2>Work together where it&nbsp;matters most.</h2>
+      </div>
+      <div class="boxes">
+        <div class="box"><h3>Market Entry Project</h3><p>A&nbsp;defined assessment and&nbsp;launch roadmap.</p></div>
+        <div class="box"><h3>Distributor Development</h3><p>Partner identification, assessment and&nbsp;engagement.</p></div>
+        <div class="box feat"><span class="tag">Ongoing</span><h3>Fractional Commercial Leadership</h3><p>Ongoing senior support while a&nbsp;brand builds its&nbsp;U.S.&nbsp;organization.</p></div>
+        <div class="box"><h3>Focused Advisory</h3><p>Help with&nbsp;a&nbsp;specific pricing, distribution, portfolio or&nbsp;sales challenge.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="container grid">
       <div class="card">
-        <p class="who"><b>Pavel Martynov</b><br><span class="muted">Founder &amp; Managing Partner<br>Martynov Brand Advisory LLC · Florida, USA</span></p>
-        <div class="buttons">
-          <a class="btn btn-gold" href="mailto:CONTACT_EMAIL_HERE?subject=U.S.%20market%20discussion">Email Pavel <span class="arr" aria-hidden="true">→</span></a>
-          <a class="btn btn-outline" href="LINKEDIN_URL_HERE">LinkedIn</a>
+        <svg class="pm watermark" aria-hidden="true"><use href="#pm"/></svg>
+        <h2>Let’s discuss your U.S.&nbsp;business.</h2>
+        <p class="lead">Tell us&nbsp;where your&nbsp;brand stands and&nbsp;what&nbsp;you&nbsp;want to&nbsp;build. We&nbsp;will start with&nbsp;a&nbsp;conversation about the&nbsp;opportunity, the&nbsp;constraints and&nbsp;the&nbsp;next useful step.</p>
+        <div class="ctas">
+          <a class="btn btn-gold btn-lg ico-mail" href="mailto:Pavel@mpbrandadvisory.com?subject=U.S.%20market%20discussion">Email</a>
+          <a class="btn btn-line on-dark btn-lg ico-in" href="https://www.linkedin.com/in/pavelm81/" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
     </div>
@@ -341,10 +597,215 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 </main>
 
 <footer>
-  <div class="wrap">
-    <span>© 2026 Martynov Brand Advisory LLC · Florida, USA</span>
-    <a href="#">Privacy Policy</a>
+  <div class="container grid">
+    <div class="first">
+      <svg class="pm" fill="currentColor" aria-hidden="true"><use href="#pm"/></svg>
+      <a href="#top">Back to&nbsp;top ↑</a>
+    </div>
+    <div class="col c1"><b>Company</b><a href="#services">Services</a><a href="#approach">Approach</a><a href="#about">About</a></div>
+    <div class="col c2"><b>Contact</b><a href="mailto:Pavel@mpbrandadvisory.com">Email</a><a href="https://www.linkedin.com/in/pavelm81/" target="_blank" rel="noopener">LinkedIn</a></div>
+    <div class="col c3"><b>Legal</b><a href="#">Privacy Policy</a></div>
+    <div class="legal"><span>Florida, USA</span><span>© 2026 Martynov Brand Advisory LLC. All rights reserved.</span></div>
   </div>
 </footer>
+
+<div class="guides" aria-hidden="true"><div class="container grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<script>
+addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName))document.querySelector('.guides').classList.toggle('on')});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-array@3/dist/d3-array.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-geo@3/dist/d3-geo.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+/* ---------- Motion (GSAP) ----------
+   Text: line-by-line rise from a mask on first view (explanation of hierarchy, not decoration).
+   U.S. market: words darken with scroll progress (scrubbed, reversible).
+   Approach: line draws, nodes and gates follow in order (shows the sequence).
+   Cards: short staggered rise. Everything is skipped under prefers-reduced-motion. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger || !window.SplitText) return;
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+  const EASE = 'expo.out';
+  const mm = gsap.matchMedia();
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    // Line-by-line reveal for headings and lead copy
+    const targets = gsap.utils.toArray('.hero h1, .hero .sub, main h2, main .lead:not(.statement .lead), .ap-head .sub, .quote, .why .lead');
+    targets.forEach(el => {
+      const inHero = !!el.closest('.hero');
+      SplitText.create(el, {
+        type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'ln',
+        onSplit(self) {
+          return gsap.from(self.lines, {
+            yPercent: 110, duration: inHero ? 1.1 : .9, ease: EASE, stagger: .08,
+            delay: inHero ? (el.tagName === 'H1' ? .1 : .35) : 0,
+            scrollTrigger: inHero ? null : { trigger: el, start: 'top 88%', once: true }
+          });
+        }
+      });
+    });
+    gsap.from('.hero .ctas .btn', { y: 16, opacity: 0, duration: .8, ease: EASE, stagger: .06, delay: .6 });
+
+    // U.S. market: words darken as the paragraph scrolls through
+    const st = document.querySelector('.statement .lead');
+    if (st) SplitText.create(st, {
+      type: 'words', autoSplit: true,
+      onSplit(self) {
+        return gsap.fromTo(self.words, { color: 'rgba(37,42,46,.25)' }, {
+          color: '#252A2E', ease: 'none', stagger: .1,
+          // Full-screen section pins at the top until every word has filled in
+          scrollTrigger: { trigger: st.closest('.statement'), start: 'top top', end: '+=140%', pin: true, scrub: .4, anticipatePin: 1 }
+        });
+      }
+    });
+
+    // Approach: draw the line, then nodes, descriptions and gates in sequence
+    const proc = document.querySelector('.proc');
+    if (proc) {
+      const vertical = matchMedia('(max-width: 991px)').matches;
+      const tl = gsap.timeline({ scrollTrigger: { trigger: proc, start: 'top 80%', once: true } });
+      tl.from('.proc-line', { [vertical ? 'scaleY' : 'scaleX']: 0, duration: 1.2, ease: 'power3.inOut' })
+        .from('.proc .node', { opacity: 0, scale: .94, duration: .7, ease: EASE, stagger: .12 }, '-=.8')
+        .from('.proc li > p', { opacity: 0, y: 12, duration: .7, ease: EASE, stagger: .12 }, '<.1')
+        .from('.gate', { opacity: 0, scale: .6, duration: .5, ease: EASE, stagger: .12 }, '<.2');
+    }
+
+    // Cards and chips: short staggered rise, batched per row
+    ScrollTrigger.batch('.svc, .tile, .box, .facts > div, .brands > span, .person .photo, .partner .person', {
+      start: 'top 90%', once: true,
+      onEnter: els => gsap.from(els, { y: 24, opacity: 0, duration: .8, ease: EASE, stagger: .06 })
+    });
+  });
+
+  // Re-measure once web fonts settle so masks match final line breaks
+  document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
+})();
+
+/* ---------- Globe: orthographic d3-geo render, auto-rotates, drag to rotate ---------- */
+(() => {
+  const box = document.querySelector('.globe');
+  if (!box || !window.d3 || !d3.geoOrthographic || !window.topojson) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = 560, R = S / 2 - 4, NS = 'http://www.w3.org/2000/svg';
+  const HL = new Set(['840', '643', '792', '196', '499']);
+  const ISO = { us: '840', ru: '643', me: '499', tr: '792', cy: '196' };
+  const PINS = [
+    { id: 'us', name: 'United States', ll: [-81.5, 28.3], side: 'right' },
+    { id: 'ru', name: 'Russia', ll: [37.6, 55.75], side: 'left' },
+    { id: 'me', name: 'Montenegro', ll: [19.3, 42.6], side: 'left' },
+    { id: 'tr', name: 'Turkey', ll: [30.5, 39.5], side: 'right', dy: -10 },
+    { id: 'cy', name: 'Cyprus', ll: [33.2, 35.1], side: 'right', dy: 10 }
+  ];
+  const el = (tag, cls) => { const n = document.createElementNS(NS, tag); if (cls) n.setAttribute('class', cls); return n; };
+
+  fetch('data/countries-110m.json').then(r => r.json()).then(topo => {
+    const land = topojson.feature(topo, topo.objects.countries).features;
+    const proj = d3.geoOrthographic().scale(R).translate([S / 2, S / 2]).clipAngle(90).precision(.5);
+    const path = d3.geoPath(proj);
+    const grat = d3.geoGraticule10();
+    const rot = [32, -34, 0];
+
+    const svg = el('svg'); svg.setAttribute('viewBox', `0 0 ${S} ${S}`); svg.setAttribute('aria-hidden', 'true');
+    const sphere = el('path', 'sphere'), gr = el('path', 'grat'); svg.append(sphere, gr);
+    const lands = land.map(f => { const p = el('path', 'land' + (HL.has(f.id) ? ' hl' : '')); svg.append(p); return [p, f]; });
+    const pins = PINS.map(pn => {
+      const halo = el('circle', 'pin-halo'); halo.setAttribute('r', 9);
+      const dot = el('circle', 'pin'); dot.setAttribute('r', 4.5);
+      svg.append(halo, dot);
+      const lab = document.createElement('span'); lab.className = 'pin-label';
+      lab.innerHTML = `<img src="img/flags/${pn.id}.svg" alt="">${pn.name}`;
+      box.append(lab);
+      return { ...pn, halo, dot, lab };
+    });
+    box.querySelector('img')?.remove();
+    box.prepend(svg);
+
+    const render = () => {
+      proj.rotate(rot);
+      sphere.setAttribute('d', path({ type: 'Sphere' }));
+      gr.setAttribute('d', path(grat));
+      for (const [p, f] of lands) p.setAttribute('d', path(f) || '');
+      const k = box.clientWidth / S, centre = [-rot[0], -rot[1]];
+      for (const pn of pins) {
+        const vis = d3.geoDistance(pn.ll, centre) < Math.PI / 2 - .05;
+        const [x, y] = proj(pn.ll);
+        for (const c of [pn.halo, pn.dot]) { c.setAttribute('cx', x); c.setAttribute('cy', y); c.style.display = vis ? '' : 'none'; }
+        const w = pn.lab.offsetWidth, h = pn.lab.offsetHeight, px = x * k, py = y * k;
+        let lx = px + 12, ly = py - h / 2 + (pn.dy || 0);
+        if (pn.side === 'left') lx = px - 12 - w;
+        if (pn.side === 'up') { lx = px - w / 2 + 10; ly = py - 14 - h; }
+        if (pn.side === 'down') { lx = px - w / 2 + 16; ly = py + 12; }
+        const vw = document.documentElement.clientWidth - box.getBoundingClientRect().left - 8;
+        if (pn.side === 'right' && lx + w > vw) lx = px - 12 - w; // no room on the right (narrow screens): flip left
+        pn.lab.style.transform = `translate(${lx}px,${ly}px)`;
+        pn.lab.style.opacity = vis ? 1 : 0;
+      }
+    };
+
+    // Auto-rotation (paused off-screen, while dragging, and under reduced motion)
+    let visible = false, dragging = false, hovering = false, vx = 0, last = performance.now();
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(box);
+    const SPEED = .006; // deg per ms ≈ one turn per minute
+    const tick = now => {
+      const dt = Math.min(64, now - last); last = now;
+      if (visible && !dragging && !hovering) {
+        if (Math.abs(vx) > .001) { rot[0] += vx * dt; vx *= Math.pow(.94, dt / 16); }
+        else if (!reduce) rot[0] += SPEED * dt;
+        render();
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Drag to rotate: horizontal spins, vertical tilts (clamped); release keeps momentum
+    let px0, py0, t0;
+    box.addEventListener('pointerdown', e => {
+      dragging = true; vx = 0; px0 = e.clientX; py0 = e.clientY; t0 = performance.now();
+      box.setPointerCapture(e.pointerId); box.classList.add('dragging');
+    });
+    box.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const k = 180 / box.clientWidth, now = performance.now();
+      const dx = (e.clientX - px0) * k, dy = (e.clientY - py0) * k;
+      rot[0] += dx; rot[1] = Math.max(-70, Math.min(70, rot[1] - dy));
+      vx = dx / Math.max(1, now - t0);
+      px0 = e.clientX; py0 = e.clientY; t0 = now;
+      render();
+    });
+    const end = () => { dragging = false; box.classList.remove('dragging'); };
+    box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+    // Text chips ↔ globe: hovering a country in the copy lights it up and brings it into view
+    const byId = new Map(lands.map(([p, f]) => [f.id, p]));
+    let tween;
+    const light = (c, on) => {
+      byId.get(ISO[c])?.classList.toggle('on', on);
+      pins.find(pn => pn.id === c)?.lab.classList.toggle('on', on);
+      document.querySelectorAll(`.chip[data-c="${c}"]`).forEach(ch => ch.classList.toggle('on', on));
+      hovering = on;
+      if (on) {
+        const pn = pins.find(p => p.id === c);
+        if (d3.geoDistance(pn.ll, [-rot[0], -rot[1]]) > 1.2 && window.gsap) {
+          tween?.kill();
+          const target = { l: rot[0] }, to = -pn.ll[0] + (pn.ll[0] > 0 ? 25 : -25);
+          let dl = ((to - rot[0]) % 360 + 540) % 360 - 180;
+          tween = gsap.to(target, { l: rot[0] + dl, duration: reduce ? 0 : 1.1, ease: 'power3.inOut', onUpdate: () => { rot[0] = target.l; render(); } });
+        }
+      }
+      render();
+    };
+    // Delegated: SplitText re-wraps the paragraph, so listeners live on the document
+    let cur = null;
+    const set = c => { if (c === cur) return; if (cur) light(cur, false); cur = c; if (c) light(c, true); };
+    document.addEventListener('pointerover', e => set(e.target.closest?.('.chip[data-c]')?.dataset.c || null));
+    document.addEventListener('focusin', e => set(e.target.closest?.('.chip[data-c]')?.dataset.c || null));
+    document.addEventListener('focusout', () => set(null));
+    addEventListener('resize', render);
+    render();
+  }).catch(() => { /* keep static fallback image */ });
+})();
+</script>
 </body>
 </html>
