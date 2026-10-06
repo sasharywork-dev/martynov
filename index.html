@@ -215,6 +215,7 @@ p{text-wrap:pretty}
 .person .body{margin-top:2.5rem;display:grid;gap:1.125rem;max-width:40rem}
 .person .fine{font-size:.875rem;color:var(--muted)}
 #about .body{gap:0}
+#about .group,#about .fine{max-width:36rem}
 #about .facts{margin-bottom:4rem}
 #about .fine{margin-top:.625rem}
 .person .body{gap:1.75rem}
@@ -335,6 +336,7 @@ footer a:hover{color:var(--white);text-decoration:underline}
   .head,.who .intro,.tiles,.why h2,.why-body,.intl .head,.intl .lead,.ways .head,.boxes,.work .head,.work .fine{grid-column:1/-1}
   .who .intro{margin-bottom:3rem}
   .why{padding:6rem 0}
+  #about{padding-top:0}
   .why h2{margin-bottom:2rem}
   .svc.big{grid-column:1/-1;grid-row:auto;min-height:20rem}
   .svc:not(.big){grid-column:1/-1}
@@ -356,6 +358,9 @@ footer a:hover{color:var(--white);text-decoration:underline}
 @media (max-width:479px){
   :root{--section:3.75rem;--gutter:1rem;--gap:.75rem}
   body{font-size:.9375rem}
+  .label{font-size:.9375rem;margin-bottom:1.125rem}
+  .label::before{width:.4375rem;height:.4375rem}
+  .why{padding:4rem 0 2.5rem}
   h2{font-size:1.75rem}
   h3{font-size:1.1875rem}
   .lead{font-size:1.0625rem}
@@ -517,7 +522,7 @@ footer a:hover{color:var(--white);text-decoration:underline}
   <section class="section why">
     <div class="container grid">
       <h2>Senior experience, directly involved.</h2>
-      <div class="why-body"><p class="lead">Martynov Brand Advisory is&nbsp;led by&nbsp;an&nbsp;operator who&nbsp;has managed brands, sales teams, distributor relationships and&nbsp;P&amp;Ls. Clients work directly with&nbsp;Pavel from&nbsp;the&nbsp;first commercial discussion through execution. The&nbsp;work combines international perspective with&nbsp;hands-on&nbsp;U.S.&nbsp;market experience.</p>
+      <div class="why-body"><p class="lead">Martynov Brand Advisory is&nbsp;led by&nbsp;a&nbsp;team that has managed brands, sales teams, distributor relationships and&nbsp;P&amp;Ls. Clients work directly with&nbsp;Pavel from&nbsp;the&nbsp;first commercial discussion through execution. The&nbsp;work combines international perspective with&nbsp;hands-on&nbsp;U.S.&nbsp;market experience.</p>
         <a class="btn btn-gold btn-lg" href="#contact">Let’s talk</a></div>
     </div>
   </section>
@@ -555,7 +560,7 @@ footer a:hover{color:var(--white);text-decoration:underline}
             <p class="quote">Where to&nbsp;compete. Where to&nbsp;invest. How&nbsp;much.</p>
             <p>Five years turning commercial data into&nbsp;board decisions across spirits, FMCG and&nbsp;e-commerce. Currently leading business analytics and&nbsp;strategy for&nbsp;an&nbsp;international spirits group.</p>
             <div class="group"><p class="cap">Previously</p>
-            <div class="brands"><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">Heineken Group</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">Beluga Vodka</b></span><span><i class="logo" style="--src:url(img/logos/groupeseb.svg);--w:0.75rem;--h:1.25rem"></i>Groupe SEB</span><span><i class="logo" style="--src:url(img/logos/ey.svg);--w:1.5rem;--h:1.5rem"></i><b class="sr">EY</b></span><span><i class="logo" style="--src:url(img/logos/tuborg.svg);--w:3.25rem;--h:2rem"></i><b class="sr">Tuborg</b></span><span class="word word-sm">JACK DANIEL’S</span><span><img class="logo-img" src="img/logos/heinz-blue.svg" width="64" height="40" alt="Heinz"></span></div></div>
+            <div class="brands"><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">Heineken Group</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">Beluga Vodka</b></span><span><i class="logo" style="--src:url(img/logos/groupeseb.svg);--w:0.75rem;--h:1.25rem"></i>Groupe SEB</span><span><i class="logo" style="--src:url(img/logos/ey.svg);--w:1.5rem;--h:1.5rem"></i><b class="sr">EY</b></span></div></div>
             <div class="group"><p class="cap">Focus areas</p>
             <div class="tags"><span>Market and&nbsp;portfolio prioritisation</span><span>Pricing and&nbsp;positioning</span><span>Route-to-market</span><span>Trade investment</span><span>Reporting and&nbsp;planning</span><span>AI tools</span></div></div>
           </div>
@@ -664,7 +669,7 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     targets.forEach(el => {
       const inHero = !!el.closest('.hero');
       SplitText.create(el, {
-        type: 'lines', mask: 'lines', linesClass: 'ln',
+        type: 'lines', mask: 'lines', linesClass: 'ln', reduceWhiteSpace: false,
         onSplit(self) {
           return gsap.from(self.lines, {
             yPercent: 110, duration: inHero ? 1.1 : .9, ease: EASE, stagger: .08,
@@ -680,7 +685,7 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
     // U.S. market: words darken as the paragraph scrolls through
     const st = document.querySelector('.statement .lead');
     if (st) SplitText.create(st, {
-      type: 'words',
+      type: 'words', reduceWhiteSpace: false,
       onSplit(self) {
         return gsap.fromTo(self.words, { color: 'rgba(37,42,46,.25)' }, {
           // key pain points fill in gold, the rest in graphite
