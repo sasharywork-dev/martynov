@@ -96,10 +96,16 @@ p{margin:0;text-wrap:pretty}
 
 /* About */
 .about{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px 72px;align-items:start}
-.portrait{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;background:var(--sand)}
+.portrait{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;background:var(--sand);filter:grayscale(1)}
 .about .role{font:600 1rem/1.4 var(--body);color:var(--muted);margin-top:10px}
 .about .body{margin-top:32px;display:grid;gap:18px;max-width:62ch}
 .fine{font-size:.875rem;color:var(--muted)}
+
+.partner{padding-top:0}
+.partner .about{padding-top:clamp(48px,7vw,80px);border-top:1px solid var(--sand)}
+.partner .portrait{max-width:360px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tags span{border:1px solid var(--sand);border-radius:3px;padding:6px 12px;font-size:.875rem}
 
 /* Perspective */
 .places{display:flex;flex-wrap:wrap;gap:10px 32px;margin-top:40px;font:700 clamp(1.25rem,2.4vw,1.75rem)/1.2 var(--display);letter-spacing:-.02em;color:var(--blue)}
@@ -254,6 +260,26 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
           <p>His professional experience includes roles and projects involving the Coca-Cola system, HEINEKEN, Russian Standard, BELUGA, Brown-Forman and Finlandia Vodka.</p>
           <p>Based in Florida, Pavel works with brands and commercial partners across the United States.</p>
           <p class="fine">Company names describe Pavel’s professional background; they are not endorsements of Martynov Brand Advisory.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner -->
+  <section class="section partner" id="partner">
+    <div class="wrap about">
+      <img class="portrait" src="img/konstantin.jpg" width="937" height="1249" alt="Konstantin Emma">
+      <div>
+        <p class="label">Partner</p>
+        <h2>Konstantin Emma</h2>
+        <p class="role">Commercial Strategy &amp; Analytics</p>
+        <div class="body">
+          <p class="lead">Where to compete. Where to invest. How much.</p>
+          <p>Five years turning commercial data into board decisions across spirits, FMCG and e-commerce. Currently leading business analytics and strategy for an international spirits group.</p>
+          <p class="muted">Previously Heineken Group, Beluga Vodka, Groupe SEB and EY.</p>
+          <div class="tags">
+            <span>Market and portfolio prioritisation</span><span>Pricing and positioning</span><span>Route-to-market</span><span>Trade investment</span><span>Reporting and planning</span><span>AI tools</span>
+          </div>
         </div>
       </div>
     </div>
