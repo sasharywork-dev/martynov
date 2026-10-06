@@ -65,6 +65,7 @@ body {
   --gap:1.25rem;
   --section:7.5rem;
   --r:.75rem; --r-s:.5rem; --muted-2:#6F7478;
+  --gold-text:#A87B35; /* darker gold: 3.4:1 on white, for large text */
   --ease-out:cubic-bezier(.23,1,.32,1);
   --i-chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z'/%3E%3C/svg%3E");
   --i-mail:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z'/%3E%3C/svg%3E");
@@ -171,6 +172,7 @@ p{text-wrap:pretty}
 .statement .container{width:100%}
 .statement h2{grid-column:2/8;font:500 2.3125rem/1.2 var(--display);letter-spacing:-.03em;color:var(--graphite)}
 .statement p{grid-column:2/8;margin-top:1.5rem;font:500 2.3125rem/1.2 var(--display);letter-spacing:-.03em;color:var(--graphite)}
+.statement .key{color:var(--gold-text)}
 .statement p .w{color:rgb(37 42 46/.28);transition:color .25s ease-out}
 .statement p .w.on{color:var(--graphite)}
 
@@ -223,10 +225,14 @@ p{text-wrap:pretty}
 .cap{font:600 .75rem/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
 .quote{font:600 1.625rem/1.25 var(--display);letter-spacing:-.02em;color:var(--blue);padding-left:1rem;border-left:.125rem solid var(--gold)}
 .brands{display:flex;flex-wrap:wrap;gap:.5rem}
-.brands span{display:inline-flex;align-items:center;justify-content:center;gap:.625rem;min-height:3rem;min-width:6rem;border-radius:var(--r-s);padding:.5rem .875rem;font:600 .875rem/1 var(--display);color:var(--blue);background:var(--soft)}
+.brands > span{display:inline-flex;align-items:center;justify-content:center;gap:.625rem;min-height:3rem;min-width:6rem;border-radius:var(--r-s);padding:.5rem .875rem;font:600 .875rem/1 var(--display);color:var(--blue);background:var(--soft)}
 .brands .word{font:700 1rem/1 var(--display);letter-spacing:.14em}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.logo{flex:none;width:var(--w);height:var(--h);background:var(--blue);-webkit-mask:var(--src) left center/contain no-repeat;mask:var(--src) left center/contain no-repeat}
+.logo{flex:none;width:var(--w);height:var(--h);background:var(--blue);-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
+.logo-img{display:block;width:auto;height:1.75rem}
+.brands .word-sm{font-size:.8125rem;letter-spacing:.1em}
+.brands .word-2{flex-direction:column;gap:.125rem;line-height:1}
+.brands .word-2 small{font:600 .625rem/1 var(--body);letter-spacing:.08em;text-transform:none}
 .partner{padding-top:0}
 .partner .person{padding:3rem;border-radius:var(--r);background:var(--white);border:.0625rem solid #F1F1F1;box-shadow:var(--shadow)}
 .partner .body > p:not(.quote){color:var(--graphite)}
@@ -481,7 +487,7 @@ footer a:hover{color:var(--white);text-decoration:underline}
   <section class="section statement">
     <div class="container grid">
       <h2>The&nbsp;U.S.&nbsp;is&nbsp;a&nbsp;collection of&nbsp;markets.</h2>
-      <p class="lead">State rules, distribution structures, pricing and&nbsp;retail dynamics vary widely. For&nbsp;alcohol brands, the&nbsp;three-tier system adds another set of&nbsp;decisions. A&nbsp;distributor agreement alone does not&nbsp;create demand. We&nbsp;help brands decide where to&nbsp;invest, which partners to&nbsp;choose and&nbsp;how&nbsp;to&nbsp;manage the&nbsp;business after launch.</p>
+      <p class="lead"><span class="key">State rules</span>, <span class="key">distribution structures</span>, <span class="key">pricing</span> and&nbsp;retail dynamics vary widely. For&nbsp;alcohol brands, the&nbsp;<span class="key">three-tier system</span> adds another set of&nbsp;decisions. <span class="key">A&nbsp;distributor agreement alone does not&nbsp;create demand</span>. We&nbsp;help brands decide where to&nbsp;invest, which partners to&nbsp;choose and&nbsp;how&nbsp;to&nbsp;manage the&nbsp;business after launch.</p>
     </div>
   </section>
 
@@ -527,10 +533,10 @@ footer a:hover{color:var(--white);text-decoration:underline}
           <div class="facts">
             <div><b>CEO</b><span>From&nbsp;key accounts and&nbsp;national sales to&nbsp;general management</span></div>
             <div><b>$250M</b><span>Approximate annual revenue of&nbsp;the&nbsp;largest business led</span></div>
-            <div><b>Florida</b><span>Working with&nbsp;brands across the&nbsp;United States</span></div>
+            <div><b>Florida</b><span>Florida based&nbsp;LLC</span></div>
           </div>
           <div class="group"><p class="cap">Experience includes</p>
-          <div class="brands"><span><i class="logo" style="--src:url(img/logos/cocacola.svg);--w:4.5rem;--h:1.5rem"></i><b class="sr">Coca-Cola system</b></span><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">HEINEKEN</b></span><span><i class="logo" style="--src:url(img/logos/russianstandard.svg);--w:4.25rem;--h:1.625rem"></i><b class="sr">Russian Standard</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">BELUGA</b></span><span><i class="logo" style="--src:url(img/logos/brownforman.svg);--w:6rem;--h:0.75rem"></i><b class="sr">Brown-Forman</b></span><span class="word">FINLANDIA</span></div></div>
+          <div class="brands"><span><i class="logo" style="--src:url(img/logos/cocacola.svg);--w:4.5rem;--h:1.5rem"></i><b class="sr">Coca-Cola system</b></span><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">HEINEKEN</b></span><span><i class="logo" style="--src:url(img/logos/russianstandard.svg);--w:4.25rem;--h:1.625rem"></i><b class="sr">Russian Standard</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">BELUGA</b></span><span class="word word-sm">JACK DANIEL’S</span><span class="word word-2"><span>FINLANDIA</span><small>Vodka</small></span><span><i class="logo" style="--src:url(img/logos/tuborg.svg);--w:3.25rem;--h:2rem"></i><b class="sr">Tuborg</b></span><span><img class="logo-img" src="img/logos/heinz-blue.svg" width="64" height="40" alt="Heinz"></span></div></div>
           <p class="fine">* Company names describe Pavel’s professional background; they are&nbsp;not&nbsp;endorsements of&nbsp;Martynov Brand Advisory.</p>
         </div>
       </div>
@@ -549,7 +555,7 @@ footer a:hover{color:var(--white);text-decoration:underline}
             <p class="quote">Where to&nbsp;compete. Where to&nbsp;invest. How&nbsp;much.</p>
             <p>Five years turning commercial data into&nbsp;board decisions across spirits, FMCG and&nbsp;e-commerce. Currently leading business analytics and&nbsp;strategy for&nbsp;an&nbsp;international spirits group.</p>
             <div class="group"><p class="cap">Previously</p>
-            <div class="brands"><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">Heineken Group</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">Beluga Vodka</b></span><span><i class="logo" style="--src:url(img/logos/groupeseb.svg);--w:0.75rem;--h:1.25rem"></i>Groupe SEB</span><span><i class="logo" style="--src:url(img/logos/ey.svg);--w:1.5rem;--h:1.5rem"></i><b class="sr">EY</b></span></div></div>
+            <div class="brands"><span><i class="logo" style="--src:url(img/logos/heineken.svg);--w:5.5rem;--h:1.375rem"></i><b class="sr">Heineken Group</b></span><span><i class="logo" style="--src:url(img/logos/beluga.png);--w:2.75rem;--h:1.75rem"></i><b class="sr">Beluga Vodka</b></span><span><i class="logo" style="--src:url(img/logos/groupeseb.svg);--w:0.75rem;--h:1.25rem"></i>Groupe SEB</span><span><i class="logo" style="--src:url(img/logos/ey.svg);--w:1.5rem;--h:1.5rem"></i><b class="sr">EY</b></span><span><i class="logo" style="--src:url(img/logos/tuborg.svg);--w:3.25rem;--h:2rem"></i><b class="sr">Tuborg</b></span><span class="word word-sm">JACK DANIEL’S</span><span><img class="logo-img" src="img/logos/heinz-blue.svg" width="64" height="40" alt="Heinz"></span></div></div>
             <div class="group"><p class="cap">Focus areas</p>
             <div class="tags"><span>Market and&nbsp;portfolio prioritisation</span><span>Pricing and&nbsp;positioning</span><span>Route-to-market</span><span>Trade investment</span><span>Reporting and&nbsp;planning</span><span>AI tools</span></div></div>
           </div>
@@ -677,7 +683,8 @@ addEventListener('keydown',e=>{if(e.key==='g'&&!e.metaKey&&!e.ctrlKey&&!/INPUT|T
       type: 'words',
       onSplit(self) {
         return gsap.fromTo(self.words, { color: 'rgba(37,42,46,.25)' }, {
-          color: '#252A2E', ease: 'none', stagger: .1,
+          // key pain points fill in gold, the rest in graphite
+          color: (i, w) => w.closest('.key') ? '#A87B35' : '#252A2E', ease: 'none', stagger: .1,
           // Full-screen section pins at the top until every word has filled in
           scrollTrigger: { trigger: st.closest('.statement'), start: 'top top', end: '+=140%', pin: true, scrub: .4, anticipatePin: 1 }
         });
